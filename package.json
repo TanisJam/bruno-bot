@@ -1,0 +1,26 @@
+{
+  "name": "nivel20-character-bot",
+  "version": "1.0.0",
+  "description": "Discord bot for searching Nivel20 D&D characters",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "concurrently \"tsc -w\" \"nodemon dist/index.js\"",
+    "deploy:commands": "tsc && node dist/deploy-commands.js"
+  },
+  "keywords": ["discord", "bot", "dnd", "nivel20", "character-search"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.1.4",
+    "typescript": "^5.5.3"
+  },
+  "dependencies": {
+    "discord.js": "^14.15.3",
+    "axios": "^1.7.2",
+    "cheerio": "^1.0.0-rc.12",
+    "dotenv": "^16.4.5"
+  }
+}
