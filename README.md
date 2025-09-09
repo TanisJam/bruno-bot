@@ -9,7 +9,6 @@ Un bot de Discord completo para automatizar la gestión de campañas de D&D 5e, 
 - **Información Detallada**: Muestra estadísticas completas, habilidades, tiradas de salvación y más
 - **Interfaz Interactiva**: Usa botones de Discord para una experiencia de usuario fluida
 - **Embeds Elegantes**: Presenta la información en formato visualmente atractivo
-- **Restricción DM**: Solo los Dungeon Masters pueden usar estos comandos
 
 ### 🚧 **Recordatorios Semanales** (Planificado)
 - **Configuración Flexible**: Los DMs pueden configurar recordatorios automáticos para las partidas
@@ -21,10 +20,10 @@ Un bot de Discord completo para automatizar la gestión de campañas de D&D 5e, 
 - **Tablas Personalizables**: Los DMs pueden crear y gestionar sus propias tablas de clima
 - **Variedad Narrativa**: Múltiples descripciones para mantener la inmersión
 
-### 🚧 **Tienda Rotativa Semanal** (Planificado)
-- **Inventario Dinámico**: Sistema de tienda con ítems que rotan semanalmente
-- **Gestión de Ítems**: Los DMs pueden agregar, modificar y eliminar ítems
-- **Catálogo Personalizado**: Cada servidor tiene su propia tienda independiente
+### 🚧 **Tienda del Servidor** (Planificado)
+- **Inventario Único**: Sistema de tienda exclusivo para este servidor
+- **Gestión DM**: Los DMs pueden agregar y quitar ítems personalizados
+- **Catálogo Dinámico**: Inventario que se actualiza según las decisiones del DM
 
 ## 📋 Requisitos
 
@@ -80,6 +79,63 @@ Un bot de Discord completo para automatizar la gestión de campañas de D&D 5e, 
    npm start
    ```
 
+## 🐳 Despliegue con Docker
+
+### Construcción de la Imagen
+
+```bash
+# Construir la imagen
+docker build -t bruno-bot .
+
+# O con un tag específico
+docker build -t bruno-bot:latest .
+```
+
+### Ejecución del Contenedor
+
+```bash
+# Ejecutar con variables de entorno desde archivo .env
+docker run --env-file .env bruno-bot
+
+# O especificar variables manualmente
+docker run -e CLIENT_ID=tu_client_id \
+           -e TOKEN=tu_token \
+           -e GUILD_ID=tu_guild_id \
+           -e DATABASE_URL=tu_database_url \
+           bruno-bot
+```
+
+### Docker Compose (Recomendado)
+
+Crea un archivo `docker-compose.yml`:
+
+```yaml
+version: '3.8'
+
+services:
+  bruno-bot:
+    build: .
+    environment:
+      - CLIENT_ID=${CLIENT_ID}
+      - TOKEN=${TOKEN}
+      - GUILD_ID=${GUILD_ID}
+      - DATABASE_URL=${DATABASE_URL}
+    restart: unless-stopped
+```
+
+Luego ejecuta:
+
+```bash
+# Construir y ejecutar
+docker-compose up -d
+
+# Ver logs
+docker-compose logs -f bruno-bot
+
+# Detener
+docker-compose down
+```
+
 ## 🎮 Comandos Disponibles
 
 > **⚠️ Importante**: Todos los comandos están restringidos a usuarios con rol de Dungeon Master (DM)
@@ -111,11 +167,11 @@ El bot mostrará una lista de personajes que coincidan con la búsqueda. Puedes 
 - `/clima agregar [descripcion]`: Agrega una nueva descripción a la tabla de clima
 - `/clima eliminar [descripcion_id]`: Elimina una descripción de la tabla
 
-#### `/tienda` - Tienda Rotativa Semanal
-- `/tienda agregar [nombre] [precio] [descripcion]`: Agrega un ítem al listado actual
-- `/tienda modificar [item_id] [opcion] [nuevo_valor]`: Modifica un ítem existente
-- `/tienda eliminar [item_id]`: Elimina un ítem del inventario
-- `/tienda mostrar`: Publica la tienda actual en el canal
+#### `/tienda` - Tienda del Servidor
+- `/tienda agregar [nombre] [precio] [descripcion]`: Agrega un ítem personalizado al inventario
+- `/tienda eliminar [item_id]`: Quita un ítem del inventario
+- `/tienda mostrar`: Muestra el inventario actual de la tienda
+- `/tienda modificar [item_id] [opcion] [nuevo_valor]`: Modifica un ítem existente (opcional)
 
 ## 🔧 Desarrollo
 
@@ -254,7 +310,7 @@ Se recomienda usar **Vercel Postgres** o **Supabase** para las características 
 ### Problemas de permisos
 - Verifica que el bot tenga los permisos necesarios en el servidor
 - Asegúrate de que el bot pueda enviar mensajes y usar comandos slash
-- Confirma que el usuario tenga rol de Dungeon Master para usar los comandos
+- **Confirma que el usuario tenga rol de Dungeon Master** - Todos los comandos requieren permisos DM
 
 ### Problemas con características futuras
 - Verifica la configuración de la base de datos si usas funciones que requieren persistencia

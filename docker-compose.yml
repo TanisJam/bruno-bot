@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  bruno-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=production
+      - CLIENT_ID=${CLIENT_ID}
+      - TOKEN=${TOKEN}
+      - GUILD_ID=${GUILD_ID}
+      - DATABASE_URL=${DATABASE_URL}
+    restart: unless-stopped
