@@ -20,6 +20,7 @@ export const client = new Client({
  */
 client.commands = new Collection<string, Command>();
 
+
 /**
  * Initialize and register commands
  */
