@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Bruno Bot is a Discord bot for D&D 5e campaign management that integrates with Nivel20.com. It provides character lookup functionality with plans for automated reminders, weather systems, and server-specific shops.
+Bruno Bot is a Discord bot for D&D 5e campaign management that integrates with Nivel20.com. It provides character lookup functionality, automated weekly reminders for game sessions, with plans for weather systems and server-specific shops.
 
 ## Essential Commands
 
@@ -53,8 +53,16 @@ docker-compose down
 
 **Service Layer**:
 - `src/services/nivel20.service.ts` - Web scraping service for Nivel20.com character data
-- Uses Axios for HTTP requests and Cheerio for HTML parsing
-- CharacterSheet model transforms raw JSON to Discord embeds
+  - Uses Axios for HTTP requests and Cheerio for HTML parsing
+  - CharacterSheet model transforms raw JSON to Discord embeds
+- `src/services/database.service.ts` - SQLite database service using better-sqlite3
+  - Singleton pattern for single instance across the bot
+  - Provides CRUD operations for guilds, reminders, weather, shop inventory
+  - See `DATABASE.md` for complete documentation
+- `src/services/scheduler.service.ts` - Automated task scheduler using node-cron
+  - Runs every minute checking for reminders to send
+  - Validates permissions before sending messages
+  - Manages start/stop lifecycle
 
 **Interactive Components**:
 - Character search uses button-based interaction (60-second timeout)
@@ -69,7 +77,7 @@ docker-compose down
 **Configuration**:
 - Environment variables validated in `src/config.ts` at startup
 - Required: `CLIENT_ID`, `TOKEN`, `GUILD_ID`
-- Optional: `DATABASE_URL` (for future features)
+- Optional: `DB_PATH` (defaults to `./data/bruno-bot.db`)
 
 ### Important Implementation Details
 
@@ -89,6 +97,21 @@ docker-compose down
 - Client interface extended to include `commands: Collection<string, Command>`
 - Intents: Guilds, GuildMessages, MessageContent
 - All user-facing text is in Spanish
+- DM-only commands use `.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)`
+
+**Database & Persistence**:
+- SQLite database stored in `./data/bruno-bot.db` (configurable via `DB_PATH`)
+- Schema automatically initialized on first run from `src/database/schema.sql`
+- Database persists guilds, reminders, weather conditions, and shop inventory
+- All tables use foreign keys for referential integrity
+- See `DATABASE.md` for full schema documentation
+
+**Scheduler System**:
+- `SchedulerService` starts when bot is ready (`Events.ClientReady`)
+- Cron job runs every minute: `* * * * *`
+- Compares current day/time with enabled reminders
+- Sends messages only if bot has `SendMessages` permission in target channel
+- Graceful shutdown handlers (SIGINT/SIGTERM) stop scheduler and close DB
 
 ## Testing Workflow
 
@@ -98,12 +121,19 @@ docker-compose down
 4. Run `pnpm start` or `pnpm run dev` to test
 5. Monitor logs via `src/utils/logger.ts`
 
+## Implemented Features
+
+### Weekly Reminders ✅
+- **Command**: `/recordatorio` with subcommands (crear, listar, activar, desactivar, eliminar)
+- **Storage**: SQLite database (`reminders` table)
+- **Scheduling**: node-cron checks every minute for matching day/time
+- **Permissions**: Requires ManageGuild permission (DM-only)
+
 ## Future Features (Planned)
 
-The README outlines planned features: weekly reminders, weather system, and server shop. These will require:
-- Database integration (DATABASE_URL env var exists but unused)
-- Scheduled tasks (cron jobs)
-- Additional command files in `src/commands/`
-- New service files in `src/services/`
+The README outlines planned features: weather system and server shop. These will require:
+- Additional command files in `src/commands/` (weather.ts, shop.ts)
+- New service files in `src/services/` (weather.service.ts, shop.service.ts)
+- Database schema already supports these features (see `DATABASE.md`)
 
 When implementing these, follow the existing command pattern and service architecture.

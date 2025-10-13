@@ -3,6 +3,8 @@ import config from './config';
 import * as commandsModules from './commands';
 import { Command } from './types/Command';
 import { logger } from './utils/logger';
+import { DatabaseService } from './services/database.service';
+import { SchedulerService } from './services/scheduler.service';
 
 /**
  * Create Discord client with necessary intents
@@ -34,11 +36,41 @@ Object.keys(commands).forEach((commandName) => {
 });
 
 /**
+ * Initialize database and scheduler
+ */
+let schedulerService: SchedulerService;
+
+try {
+  // Initialize database
+  const db = DatabaseService.getInstance(config.DB_PATH);
+  logger.info('✅ Database service initialized');
+
+  // Initialize scheduler (will start after bot is ready)
+  schedulerService = new SchedulerService(client, db);
+} catch (error) {
+  logger.error('❌ Error initializing services:', error);
+  process.exit(1);
+}
+
+/**
  * Event when bot is ready
  */
 client.once(Events.ClientReady, async () => {
   logger.info(`🤖 ${client.user?.username} is online and ready!`);
   logger.info(`📊 Serving ${client.guilds.cache.size} guilds`);
+
+  // Ensure all guilds are registered in database
+  for (const [guildId, guild] of client.guilds.cache) {
+    try {
+      DatabaseService.getInstance().ensureGuild(guildId, guild.name);
+      logger.info(`✅ Guild registered: ${guild.name} (${guildId})`);
+    } catch (error) {
+      logger.error(`❌ Error registering guild ${guildId}:`, error);
+    }
+  }
+
+  // Start scheduler
+  schedulerService.start();
 });
 
 /**
@@ -112,6 +144,23 @@ process.on('unhandledRejection', (error) => {
 process.on('uncaughtException', (error) => {
   logger.error('🚨 Uncaught exception:', error);
   process.exit(1);
+});
+
+/**
+ * Handle graceful shutdown
+ */
+process.on('SIGINT', () => {
+  logger.info('🛑 Received SIGINT, shutting down gracefully...');
+  schedulerService.stop();
+  DatabaseService.getInstance().close();
+  process.exit(0);
+});
+
+process.on('SIGTERM', () => {
+  logger.info('🛑 Received SIGTERM, shutting down gracefully...');
+  schedulerService.stop();
+  DatabaseService.getInstance().close();
+  process.exit(0);
 });
 
 /**

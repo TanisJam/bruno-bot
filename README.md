@@ -10,10 +10,11 @@ Un bot de Discord completo para automatizar la gestión de campañas de D&D 5e, 
 - **Interfaz Interactiva**: Usa botones de Discord para una experiencia de usuario fluida
 - **Embeds Elegantes**: Presenta la información en formato visualmente atractivo
 
-### 🚧 **Recordatorios Semanales** (Planificado)
+### ✅ **Recordatorios Semanales** (Implementado)
 - **Configuración Flexible**: Los DMs pueden configurar recordatorios automáticos para las partidas
 - **Personalización Completa**: Canal, día, hora y mensaje personalizables
-- **Gestión Sencilla**: Comandos para crear, editar y eliminar recordatorios
+- **Gestión Sencilla**: Comandos para crear, listar, activar/desactivar y eliminar recordatorios
+- **Sistema de Programación**: Usa node-cron para verificar y enviar recordatorios automáticamente
 
 ### 🚧 **Clima Semanal** (Planificado)
 - **Descripciones Automáticas**: Publica el clima del mundo al inicio de cada semana
@@ -29,8 +30,7 @@ Un bot de Discord completo para automatizar la gestión de campañas de D&D 5e, 
 
 - Node.js 18 o superior
 - Una aplicación de Discord Bot
-- Acceso a una campaña de Nivel20.com
-- Base de datos (Vercel Postgres o Supabase recomendado para características futuras)
+- Acceso a una campaña de Nivel20.com (opcional, solo para búsqueda de personajes)
 
 ## 🛠️ Instalación
 
@@ -53,9 +53,9 @@ Un bot de Discord completo para automatizar la gestión de campañas de D&D 5e, 
    CLIENT_ID=tu_client_id_de_discord
    TOKEN=tu_token_del_bot
    GUILD_ID=id_de_tu_servidor_discord
-   
-   # Base de datos (para características futuras)
-   DATABASE_URL=tu_url_de_base_de_datos
+
+   # Base de datos (opcional, por defecto usa ./data/bruno-bot.db)
+   DB_PATH=./data/bruno-bot.db
    ```
 
 4. **Configura la campaña de Nivel20**:
@@ -155,12 +155,33 @@ Busca información de un personaje en la campaña configurada de Nivel20.
 
 El bot mostrará una lista de personajes que coincidan con la búsqueda. Puedes hacer clic en los botones para ver la información detallada de cada personaje.
 
-### 🚧 **Comandos Planificados**
+#### `/recordatorio` - Gestión de Recordatorios ✅
+Crea y gestiona recordatorios semanales automáticos para las sesiones de juego.
 
-#### `/recordatorio` - Gestión de Recordatorios
-- `/recordatorio configurar [canal] [dia] [hora] [mensaje]`: Establece un recordatorio semanal
-- `/recordatorio editar [opcion] [valor]`: Modifica canal, día, hora o mensaje del recordatorio
-- `/recordatorio eliminar`: Desactiva el recordatorio activo
+**Subcomandos**:
+- `/recordatorio crear [canal] [mensaje] [dia] [hora]`: Crea un nuevo recordatorio semanal
+  - `canal`: Canal donde se enviará el recordatorio
+  - `mensaje`: Mensaje personalizado del recordatorio
+  - `dia`: Día de la semana (Domingo-Sábado)
+  - `hora`: Hora en formato 24h (ej: 19:00)
+
+- `/recordatorio listar`: Muestra todos los recordatorios configurados en el servidor
+
+- `/recordatorio activar [id]`: Activa un recordatorio desactivado
+  - `id`: ID del recordatorio a activar
+
+- `/recordatorio desactivar [id]`: Desactiva un recordatorio sin eliminarlo
+  - `id`: ID del recordatorio a desactivar
+
+- `/recordatorio eliminar [id]`: Elimina permanentemente un recordatorio
+  - `id`: ID del recordatorio a eliminar
+
+**Ejemplo**:
+```
+/recordatorio crear canal:#general mensaje:¡Partida en 1 hora! 🎲 dia:Viernes hora:19:00
+```
+
+### 🚧 **Comandos Planificados**
 
 #### `/clima` - Sistema de Clima Semanal
 - `/clima configurar [tabla_id]`: Asocia una tabla de clima al servidor
@@ -188,32 +209,28 @@ El bot mostrará una lista de personajes que coincidan con la búsqueda. Puedes 
 src/
 ├── commands/                    # Comandos de Discord
 │   ├── character.ts            # ✅ Comando de búsqueda de personajes
-│   ├── reminder.ts             # 🚧 Comandos de recordatorios (planificado)
+│   ├── reminder.ts             # ✅ Comandos de recordatorios
 │   ├── weather.ts              # 🚧 Comandos de clima (planificado)
 │   ├── shop.ts                 # 🚧 Comandos de tienda (planificado)
 │   └── index.ts                # Exportación de comandos
 ├── services/                   # Servicios de negocio
 │   ├── nivel20.service.ts      # ✅ Integración con Nivel20
-│   ├── database.service.ts     # 🚧 Servicio de base de datos (planificado)
-│   ├── reminder.service.ts     # 🚧 Lógica de recordatorios (planificado)
+│   ├── database.service.ts     # ✅ Servicio de base de datos (SQLite)
+│   ├── scheduler.service.ts    # ✅ Servicio de programación de tareas
 │   ├── weather.service.ts      # 🚧 Lógica de clima (planificado)
 │   └── shop.service.ts         # 🚧 Lógica de tienda (planificado)
+├── database/                   # Base de datos
+│   └── schema.sql              # ✅ Schema de SQLite
 ├── types/                      # Definiciones de TypeScript
 │   ├── Character.ts            # ✅ Tipos de personajes
 │   ├── Command.ts              # ✅ Interfaz de comandos
-│   ├── Database.ts             # 🚧 Tipos de base de datos (planificado)
+│   ├── Database.ts             # ✅ Tipos de base de datos
 │   └── models/                 # Modelos de datos
-│       ├── character-sheet.ts  # ✅ Modelo de ficha de personaje
-│       ├── reminder.ts         # 🚧 Modelo de recordatorios (planificado)
-│       ├── weather.ts          # 🚧 Modelo de clima (planificado)
-│       └── shop.ts             # 🚧 Modelo de tienda (planificado)
+│       └── character-sheet.ts  # ✅ Modelo de ficha de personaje
 ├── utils/                      # Utilidades
 │   ├── discord.utils.ts        # ✅ Helpers de Discord
 │   ├── format-text.ts          # ✅ Formateo de texto
-│   ├── logger.ts               # ✅ Sistema de logging
-│   ├── permissions.ts          # 🚧 Gestión de permisos DM (planificado)
-│   └── scheduler.ts            # 🚧 Tareas programadas (planificado)
-├── migrations/                 # 🚧 Migraciones de BD (planificado)
+│   └── logger.ts               # ✅ Sistema de logging
 ├── bot.ts                      # ✅ Cliente de Discord
 ├── config.ts                   # ✅ Configuración
 ├── deploy-commands.ts          # ✅ Script de despliegue
@@ -242,11 +259,11 @@ src/
 - [x] Sistema de comandos slash
 - [x] Buscador de personajes de Nivel20
 
-### Fase 2: Automatización Básica 🚧
-- [ ] Sistema de base de datos
-- [ ] Gestión de permisos DM
-- [ ] Recordatorios semanales
-- [ ] Tareas programadas (cron jobs)
+### Fase 2: Automatización Básica ✅
+- [x] Sistema de base de datos (SQLite con better-sqlite3)
+- [x] Gestión de permisos DM
+- [x] Recordatorios semanales
+- [x] Tareas programadas (cron jobs con node-cron)
 
 ### Fase 3: Contenido Dinámico 🚧
 - [ ] Sistema de clima semanal
