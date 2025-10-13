@@ -10,5 +10,7 @@ services:
       - CLIENT_ID=${CLIENT_ID}
       - TOKEN=${TOKEN}
       - GUILD_ID=${GUILD_ID}
-      - DATABASE_URL=${DATABASE_URL}
+      - DB_PATH=/app/data/bruno-bot.db
+    volumes:
+      - ./data:/app/data
     restart: unless-stopped

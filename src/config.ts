@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import { join } from 'path';
 
 // Load environment variables
 dotenv.config();
@@ -9,10 +10,13 @@ export interface AppConfig {
   CLIENT_ID: string;
   TOKEN: string;
   GUILD_ID: string;
+
+  // Database
+  DB_PATH: string;
 }
 
 // Extract environment variables
-const { CLIENT_ID, TOKEN, GUILD_ID } = process.env;
+const { CLIENT_ID, TOKEN, GUILD_ID, DB_PATH } = process.env;
 
 // Validate required environment variables
 const requiredEnvVars = ['CLIENT_ID', 'TOKEN', 'GUILD_ID'];
@@ -28,6 +32,9 @@ const config: AppConfig = {
   CLIENT_ID: CLIENT_ID!,
   TOKEN: TOKEN!,
   GUILD_ID: GUILD_ID!,
+
+  // Database (defaults to ./data/bruno-bot.db if not specified)
+  DB_PATH: DB_PATH || join(process.cwd(), 'data', 'bruno-bot.db'),
 };
 
 export default config;
