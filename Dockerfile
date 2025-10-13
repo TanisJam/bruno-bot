@@ -12,8 +12,8 @@ WORKDIR /app
 # Copy package files
 COPY package*.json pnpm-lock.yaml .npmrc ./
 
-# Install dependencies
-RUN pnpm install --frozen-lockfile
+# Install dependencies with build scripts allowed (needed for better-sqlite3)
+RUN pnpm install --frozen-lockfile --dangerously-allow-all-builds
 
 # Copy source files and build
 COPY . .
@@ -33,8 +33,8 @@ RUN npm install -g pnpm
 # Copy package files
 COPY --from=builder /app/package*.json /app/pnpm-lock.yaml /app/.npmrc ./
 
-# Install only production dependencies
-RUN pnpm install --frozen-lockfile --prod
+# Install only production dependencies with build scripts allowed
+RUN pnpm install --frozen-lockfile --prod --dangerously-allow-all-builds
 
 # Copy built application
 COPY --from=builder /app/dist ./dist
