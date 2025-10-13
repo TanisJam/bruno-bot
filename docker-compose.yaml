@@ -12,5 +12,8 @@ services:
       - GUILD_ID=${GUILD_ID}
       - DB_PATH=/app/data/bruno-bot.db
     volumes:
-      - ./data:/app/data
+      - bruno-bot-data:/app/data
     restart: unless-stopped
+
+volumes:
+  bruno-bot-data:

@@ -42,13 +42,5 @@ COPY --from=builder /app/dist ./dist
 # Create data directory for database
 RUN mkdir -p /app/data
 
-# Create non-root user for security
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S bruno -u 1001
-
-# Change ownership of app directory
-RUN chown -R bruno:nodejs /app
-USER bruno
-
 # Command to run the application
 CMD ["node", "dist/index.js"]
