@@ -39,6 +39,9 @@ RUN pnpm install --frozen-lockfile --prod --dangerously-allow-all-builds
 # Copy built application
 COPY --from=builder /app/dist ./dist
 
+# Copy SDR data files for shop catalog loading
+COPY --from=builder /app/sdr ./sdr
+
 # Create data directory for database
 RUN mkdir -p /app/data
 

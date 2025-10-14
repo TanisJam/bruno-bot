@@ -1,7 +1,9 @@
 import * as cron from 'node-cron';
 import { Client, TextChannel } from 'discord.js';
+import { DateTime } from 'luxon';
 import { DatabaseService } from './database.service';
 import { logger } from '../utils/logger';
+import config from '../config';
 
 /**
  * Service for scheduling and sending weekly reminders
@@ -52,9 +54,10 @@ export class SchedulerService {
    */
   private async checkAndSendReminders(): Promise<void> {
     try {
-      const now = new Date();
-      const currentDay = now.getDay(); // 0 = Sunday, 6 = Saturday
-      const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+      // Use configured timezone for accurate time checking
+      const now = DateTime.now().setZone(config.TIMEZONE);
+      const currentDay = now.weekday % 7; // Luxon: 1=Monday, 7=Sunday -> Convert to 0=Sunday, 6=Saturday
+      const currentTime = now.toFormat('HH:mm');
 
       // Get all guilds the bot is in
       const guilds = this.client.guilds.cache;

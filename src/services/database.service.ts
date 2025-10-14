@@ -485,4 +485,132 @@ export class DatabaseService {
 
     return stmt.all(guildId, limit) as Types.ShopTransaction[];
   }
+
+  // ==================== ADDITIONAL SHOP OPERATIONS ====================
+
+  /**
+   * Get item by name (case-insensitive)
+   * Used to check if item already exists before loading from SDR
+   */
+  public getItemByName(name: string, guildId?: string): Types.ItemCatalog | undefined {
+    let stmt;
+    let result;
+
+    if (guildId) {
+      stmt = this.db.prepare(`
+        SELECT * FROM item_catalog
+        WHERE LOWER(name) = LOWER(?) AND (guild_id = ? OR guild_id IS NULL)
+        LIMIT 1
+      `);
+      result = stmt.get(name, guildId);
+    } else {
+      stmt = this.db.prepare(`
+        SELECT * FROM item_catalog
+        WHERE LOWER(name) = LOWER(?)
+        LIMIT 1
+      `);
+      result = stmt.get(name);
+    }
+
+    return result as Types.ItemCatalog | undefined;
+  }
+
+  /**
+   * Get items with filters and pagination
+   */
+  public getItemsByFilters(options: {
+    guildId?: string;
+    type?: string;
+    rarity?: string;
+    limit?: number;
+    offset?: number;
+  }): Types.ItemCatalog[] {
+    const conditions: string[] = [];
+    const params: any[] = [];
+
+    // Guild filter (include global items)
+    if (options.guildId) {
+      conditions.push('(guild_id = ? OR guild_id IS NULL)');
+      params.push(options.guildId);
+    } else {
+      conditions.push('guild_id IS NULL');
+    }
+
+    // Type filter
+    if (options.type) {
+      conditions.push('type = ?');
+      params.push(options.type);
+    }
+
+    // Rarity filter
+    if (options.rarity) {
+      conditions.push('rarity = ?');
+      params.push(options.rarity);
+    }
+
+    const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+
+    let query = `
+      SELECT * FROM item_catalog
+      ${whereClause}
+      ORDER BY rarity, type, name
+    `;
+
+    // Add pagination
+    if (options.limit) {
+      query += ' LIMIT ?';
+      params.push(options.limit);
+
+      if (options.offset) {
+        query += ' OFFSET ?';
+        params.push(options.offset);
+      }
+    }
+
+    const stmt = this.db.prepare(query);
+    return stmt.all(...params) as Types.ItemCatalog[];
+  }
+
+  /**
+   * Count items with filters (for pagination)
+   */
+  public countItemsByFilters(options: {
+    guildId?: string;
+    type?: string;
+    rarity?: string;
+  }): number {
+    const conditions: string[] = [];
+    const params: any[] = [];
+
+    // Guild filter (include global items)
+    if (options.guildId) {
+      conditions.push('(guild_id = ? OR guild_id IS NULL)');
+      params.push(options.guildId);
+    } else {
+      conditions.push('guild_id IS NULL');
+    }
+
+    // Type filter
+    if (options.type) {
+      conditions.push('type = ?');
+      params.push(options.type);
+    }
+
+    // Rarity filter
+    if (options.rarity) {
+      conditions.push('rarity = ?');
+      params.push(options.rarity);
+    }
+
+    const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+
+    const query = `
+      SELECT COUNT(*) as count FROM item_catalog
+      ${whereClause}
+    `;
+
+    const stmt = this.db.prepare(query);
+    const result = stmt.get(...params) as { count: number };
+    return result.count;
+  }
 }
