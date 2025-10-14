@@ -21,10 +21,14 @@ Un bot de Discord completo para automatizar la gestión de campañas de D&D 5e, 
 - **Tablas Personalizables**: Los DMs pueden crear y gestionar sus propias tablas de clima
 - **Variedad Narrativa**: Múltiples descripciones para mantener la inmersión
 
-### 🚧 **Tienda del Servidor** (Planificado)
-- **Inventario Único**: Sistema de tienda exclusivo para este servidor
-- **Gestión DM**: Los DMs pueden agregar y quitar ítems personalizados
-- **Catálogo Dinámico**: Inventario que se actualiza según las decisiones del DM
+### ✅ **Tienda del Servidor** (Implementado)
+- **Catálogo de Ítems Mágicos**: Sistema completo de ítems con carga desde archivos SDR (System Reference Document)
+- **Gestión de Inventario**: Los DMs pueden agregar/quitar ítems del inventario de la tienda
+- **Varianza de Precios**: Sistema configurable de fluctuación de precios para mayor realismo
+- **Embeds Mejorados**: Interfaz visual atractiva con colores por rareza y formato optimizado
+- **Sistema de Stock**: Control de cantidades disponibles (limitado o ilimitado)
+- **Filtros y Búsqueda**: Buscar ítems por nombre, tipo o rareza
+- **Paginación**: Navegación fácil entre múltiples páginas de ítems
 
 ## 📋 Requisitos
 
@@ -56,6 +60,10 @@ Un bot de Discord completo para automatizar la gestión de campañas de D&D 5e, 
 
    # Base de datos (opcional, por defecto usa ./data/bruno-bot.db)
    DB_PATH=./data/bruno-bot.db
+
+   # Zona horaria (opcional, por defecto America/Argentina/Buenos_Aires - GMT-3)
+   # Usa formato IANA: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+   TIMEZONE=America/Argentina/Buenos_Aires
    ```
 
 4. **Configura la campaña de Nivel20**:
@@ -120,6 +128,7 @@ services:
       - TOKEN=${TOKEN}
       - GUILD_ID=${GUILD_ID}
       - DATABASE_URL=${DATABASE_URL}
+      - TIMEZONE=${TIMEZONE:-America/Argentina/Buenos_Aires}
     restart: unless-stopped
 ```
 
@@ -158,6 +167,8 @@ El bot mostrará una lista de personajes que coincidan con la búsqueda. Puedes 
 #### `/recordatorio` - Gestión de Recordatorios ✅
 Crea y gestiona recordatorios semanales automáticos para las sesiones de juego.
 
+> **⏰ Zona Horaria**: Los recordatorios se ejecutan según la zona horaria configurada en `TIMEZONE` (por defecto Argentina GMT-3). Puedes cambiar esto en tu archivo `.env`.
+
 **Subcomandos**:
 - `/recordatorio crear [canal] [mensaje] [dia] [hora]`: Crea un nuevo recordatorio semanal
   - `canal`: Canal donde se enviará el recordatorio
@@ -181,18 +192,50 @@ Crea y gestiona recordatorios semanales automáticos para las sesiones de juego.
 /recordatorio crear canal:#general mensaje:¡Partida en 1 hora! 🎲 dia:Viernes hora:19:00
 ```
 
+#### `/tienda` - Tienda del Servidor ✅
+Gestiona el catálogo de ítems mágicos y el inventario de la tienda del servidor.
+
+**Comandos de Catálogo**:
+- `/tienda catalogo-cargar`: [DM] Carga ítems desde archivos SDR al catálogo
+- `/tienda catalogo-ver [rareza] [tipo]`: Ver catálogo completo con filtros opcionales
+- `/tienda catalogo-buscar [nombre]`: Buscar un ítem específico en el catálogo
+- `/tienda catalogo-agregar`: [DM] Agregar un ítem personalizado mediante modal interactivo
+- `/tienda catalogo-editar [id]`: [DM] Editar un ítem existente del catálogo
+- `/tienda catalogo-eliminar [id]`: [DM] Eliminar un ítem del catálogo
+
+**Comandos de Inventario**:
+- `/tienda inventario-ver`: Ver los ítems actualmente disponibles en la tienda
+- `/tienda inventario-agregar [item_id] [stock]`: [DM] Agregar ítem del catálogo al inventario
+- `/tienda inventario-quitar [id]`: [DM] Quitar ítem del inventario
+- `/tienda inventario-stock [id] [cantidad]`: [DM] Actualizar stock de un ítem
+
+**Comandos de Configuración**:
+- `/tienda config-ver`: [DM] Ver configuración actual de la tienda
+- `/tienda config-varianza [min] [max]`: [DM] Configurar rango de varianza de precios
+- `/tienda config-capacidad [max]`: [DM] Configurar capacidad máxima del inventario
+
+**Rarezas disponibles**: Common, Uncommon, Rare, Very Rare, Legendary, Artifact
+
+**Tipos de ítems**: Weapon, Armor, Potion, Scroll, Wondrous, Misc
+
+**Ejemplo**:
+```
+# Ver catálogo filtrando por rareza legendary
+/tienda catalogo-ver rareza:legendary
+
+# Agregar ítem al inventario con stock limitado
+/tienda inventario-agregar item_id:42 stock:3
+
+# Configurar varianza de precios (80% - 150%)
+/tienda config-varianza min:0.8 max:1.5
+```
+
 ### 🚧 **Comandos Planificados**
 
 #### `/clima` - Sistema de Clima Semanal
 - `/clima configurar [tabla_id]`: Asocia una tabla de clima al servidor
 - `/clima agregar [descripcion]`: Agrega una nueva descripción a la tabla de clima
 - `/clima eliminar [descripcion_id]`: Elimina una descripción de la tabla
-
-#### `/tienda` - Tienda del Servidor
-- `/tienda agregar [nombre] [precio] [descripcion]`: Agrega un ítem personalizado al inventario
-- `/tienda eliminar [item_id]`: Quita un ítem del inventario
-- `/tienda mostrar`: Muestra el inventario actual de la tienda
-- `/tienda modificar [item_id] [opcion] [nuevo_valor]`: Modifica un ítem existente (opcional)
 
 ## 🔧 Desarrollo
 
@@ -210,27 +253,27 @@ src/
 ├── commands/                    # Comandos de Discord
 │   ├── character.ts            # ✅ Comando de búsqueda de personajes
 │   ├── reminder.ts             # ✅ Comandos de recordatorios
-│   ├── weather.ts              # 🚧 Comandos de clima (planificado)
-│   ├── shop.ts                 # 🚧 Comandos de tienda (planificado)
+│   ├── shop.ts                 # ✅ Comandos de tienda
 │   └── index.ts                # Exportación de comandos
 ├── services/                   # Servicios de negocio
 │   ├── nivel20.service.ts      # ✅ Integración con Nivel20
 │   ├── database.service.ts     # ✅ Servicio de base de datos (SQLite)
 │   ├── scheduler.service.ts    # ✅ Servicio de programación de tareas
-│   ├── weather.service.ts      # 🚧 Lógica de clima (planificado)
-│   └── shop.service.ts         # 🚧 Lógica de tienda (planificado)
+│   └── shop.service.ts         # ✅ Lógica de tienda
 ├── database/                   # Base de datos
 │   └── schema.sql              # ✅ Schema de SQLite
 ├── types/                      # Definiciones de TypeScript
 │   ├── Character.ts            # ✅ Tipos de personajes
 │   ├── Command.ts              # ✅ Interfaz de comandos
 │   ├── Database.ts             # ✅ Tipos de base de datos
+│   ├── Shop.ts                 # ✅ Tipos y constantes de tienda
 │   └── models/                 # Modelos de datos
 │       └── character-sheet.ts  # ✅ Modelo de ficha de personaje
 ├── utils/                      # Utilidades
 │   ├── discord.utils.ts        # ✅ Helpers de Discord
 │   ├── format-text.ts          # ✅ Formateo de texto
-│   └── logger.ts               # ✅ Sistema de logging
+│   ├── logger.ts               # ✅ Sistema de logging
+│   └── shop-modals.ts          # ✅ Modales interactivos de tienda
 ├── bot.ts                      # ✅ Cliente de Discord
 ├── config.ts                   # ✅ Configuración
 ├── deploy-commands.ts          # ✅ Script de despliegue
@@ -265,11 +308,14 @@ src/
 - [x] Recordatorios semanales
 - [x] Tareas programadas (cron jobs con node-cron)
 
-### Fase 3: Contenido Dinámico 🚧
+### Fase 3: Contenido Dinámico ✅
+- [x] Sistema de tienda con catálogo de ítems
+- [x] Gestión de inventarios
+- [x] Varianza de precios configurable
+- [x] Embeds mejorados con colores por rareza
 - [ ] Sistema de clima semanal
-- [ ] Tablas personalizables
-- [ ] Tienda rotativa semanal
-- [ ] Gestión de inventarios
+- [ ] Tablas personalizables de clima
+- [ ] Rotación automática de inventario
 
 ### Fase 4: Mejoras y Optimización 📅
 - [ ] Dashboard web para configuración
@@ -277,7 +323,59 @@ src/
 - [ ] Backup automático de datos
 - [ ] Integración con más plataformas
 
+## 🎨 Características Visuales
+
+### Embeds Mejorados de la Tienda
+
+Los embeds del sistema de tienda cuentan con un diseño cuidado y profesional:
+
+- **Colores Dinámicos por Rareza**: Cada embed refleja visualmente la rareza del ítem
+  - Common: Gris
+  - Uncommon: Verde
+  - Rare: Azul
+  - Very Rare: Púrpura
+  - Legendary: Naranja
+  - Artifact: Dorado
+
+- **Formato Optimizado**:
+  - Emojis contextuales para cada tipo de ítem
+  - Información estructurada con separadores visuales
+  - Espaciado vertical entre ítems para mejor legibilidad
+  - Descripciones en cursiva para destacar detalles
+
+- **Navegación Intuitiva**:
+  - Paginación con botones interactivos
+  - Filtros visuales con emojis
+  - Información clara de stock y precios
+  - Enlaces a detalles completos cuando están disponibles
+
 ## 📝 Personalización
+
+### Configurar Archivos SDR para la Tienda
+
+El sistema de tienda puede cargar ítems desde archivos JSON en formato SDR (System Reference Document):
+
+1. Crea una carpeta `sdr/` en la raíz del proyecto
+2. Agrega archivos JSON con la estructura:
+   ```json
+   [
+     {
+       "name": "Espada Larga +1",
+       "price": "500 po",
+       "link": "https://ejemplo.com/item" (opcional)
+     }
+   ]
+   ```
+
+3. Los archivos soportados son:
+   - `common.json` - Ítems comunes
+   - `uncommon.json` - Ítems poco comunes
+   - `rare.json` - Ítems raros
+   - `potions.json` - Pociones (común por defecto)
+
+4. Usa `/tienda catalogo-cargar` para importar los ítems al catálogo
+
+**Nota**: El tipo de ítem (weapon, armor, potion, etc.) se infiere automáticamente del nombre del ítem usando palabras clave.
 
 ### Cambiar la Campaña
 

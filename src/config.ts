@@ -13,10 +13,13 @@ export interface AppConfig {
 
   // Database
   DB_PATH: string;
+
+  // Timezone
+  TIMEZONE: string;
 }
 
 // Extract environment variables
-const { CLIENT_ID, TOKEN, GUILD_ID, DB_PATH } = process.env;
+const { CLIENT_ID, TOKEN, GUILD_ID, DB_PATH, TIMEZONE } = process.env;
 
 // Validate required environment variables
 const requiredEnvVars = ['CLIENT_ID', 'TOKEN', 'GUILD_ID'];
@@ -35,6 +38,9 @@ const config: AppConfig = {
 
   // Database (defaults to ./data/bruno-bot.db if not specified)
   DB_PATH: DB_PATH || join(process.cwd(), 'data', 'bruno-bot.db'),
+
+  // Timezone (defaults to America/Argentina/Buenos_Aires - GMT-3)
+  TIMEZONE: TIMEZONE || 'America/Argentina/Buenos_Aires',
 };
 
 export default config;

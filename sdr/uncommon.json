@@ -1,0 +1,487 @@
+[
+  {
+    "link": "https://5e.tools/items.html#%2b1%20all-purpose%20tool_tce",
+    "name": "+1 All-Purpose Tool",
+    "price": "1500"
+  },
+  {
+    "link": "https://5e.tools/items.html#%2b1%20ammunition_dmg",
+    "name": " +1 Ammunition",
+    "price": "25"
+  },
+  {
+    "link": "https://5e.tools/items.html#%2b1%20amulet%20of%20the%20devout_tce",
+    "name": "+1 Amulet of the Devout",
+    "price": "1500"
+  },
+  {
+    "link": "https://5e.tools/items.html#%2b1%20arcane%20grimoire_tce",
+    "name": "+1 Arcane Grimoire",
+    "price": "1500"
+  },
+  {
+    "link": "https://5e.tools/items.html#%2b1%20bloodwell%20vial_tce",
+    "name": "+1 Bloodwell Vial",
+    "price": "1500"
+  },
+  {
+    "link": "https://5e.tools/items.html#%2b1%20moon%20sickle_tce",
+    "name": "+1 Moon Sickle",
+    "price": "1500"
+  },
+  {
+    "link": "https://5e.tools/items.html#%2b1%20rhythm-maker's%20drum_tce",
+    "name": "+1 Rhythm-Maker's Drum",
+    "price": "1500"
+  },
+  {
+    "link": "https://5e.tools/items.html#%2b1%20rod%20of%20the%20pact%20keeper_dmg",
+    "name": "+1 Rod of the Pact Keeper",
+    "price": "1500"
+  },
+  {
+    "link": "https://5e.tools/items.html#%2b1%20shield%20(*)_dmg",
+    "name": " +1 Shield (item + price)",
+    "price": "1200"
+  },
+  {
+    "link": "https://5e.tools/items.html#%2b1%20weapon_dmg",
+    "name": " +1 Weapon (item + price)",
+    "price": "1000"
+  },
+  {
+    "link": "https://5e.tools/items.html#%2b1%20wraps%20of%20unarmed%20prowess_bmt",
+    "name": " +1 Wraps of Unarmed Prowess",
+    "price": "900"
+  },
+  {
+    "link": "https://5e.tools/items.html#%2b1%20wand%20of%20the%20war%20mage_dmg",
+    "name": "+1 Wand of the War Mage",
+    "price": "800"
+  },
+  {
+    "link": "https://5e.tools/items.html#adamantine%20armor_dmg",
+    "name": "Adamantine Armor (Item +  precio)",
+    "price": "600"
+  },
+  {
+    "link": "https://5e.tools/items.html#alchemy%20jug_dmg",
+    "name": "Alchemy Jug",
+    "price": "1000"
+  },
+  {
+    "link": "https://5e.tools/items.html#alchemy%20jug%20(blue)_cm",
+    "name": "Blue Alchemy Jug",
+    "price": "450"
+  },
+  {
+    "link": "https://5e.tools/items.html#alchemy%20jug%20(orange)_cm",
+    "name": "Orange Alchemy Jug",
+    "price": "450"
+  },
+  {
+    "link": "https://5e.tools/items.html#amulet%20of%20proof%20against%20detection%20and%20location_dmg",
+    "name": "Amulet of Proof against Detection and Location",
+    "price": "1200"
+  },
+  {
+    "link": "https://5e.tools/items.html#amulet%20of%20the%20drunkard_egw",
+    "name": "Amulet of the Drunkard",
+    "price": "800"
+  },
+  {
+    "link": "https://5e.tools/items.html#bag%20of%20holding_dmg",
+    "name": "Bag of Holding",
+    "price": "500"
+  },
+  {
+    "link": "https://5e.tools/items.html#bag%20of%20tricks%2c%20gray_dmg",
+    "name": "Bag of Tricks, Gray",
+    "price": "300"
+  },
+  {
+    "link": "https://5e.tools/items.html#bag%20of%20tricks%2c%20rust_dmg",
+    "name": "Bag of Tricks, Rust",
+    "price": "600"
+  },
+  {
+    "link": "https://5e.tools/items.html#bag%20of%20tricks%2c%20tan_dmg",
+    "name": "Bag of Tricks, Tan",
+    "price": "900"
+  },
+  {
+    "link": "https://5e.tools/items.html#boots%20of%20elvenkind_dmg",
+    "name": "Boots of Elvenkind",
+    "price": "1500"
+  },
+  {
+    "link": "https://5e.tools/items.html#boots%20of%20striding%20and%20springing_dmg",
+    "name": "Boots of Striding and Springing",
+    "price": "1200"
+  },
+  {
+    "link": "https://5e.tools/items.html#boots%20of%20the%20winterlands_dmg",
+    "name": "Boots of the Winterlands",
+    "price": "2000"
+  },
+  {
+    "link": "https://5e.tools/items.html#bracers%20of%20archery_dmg",
+    "name": "Bracers of Archery",
+    "price": "1500"
+  },
+  {
+    "link": "https://5e.tools/items.html#brooch%20of%20shielding_dmg",
+    "name": "Brooch of Shielding",
+    "price": "900"
+  },
+  {
+    "link": "https://5e.tools/items.html#broom%20of%20flying_dmg",
+    "name": "Broom of Flying",
+    "price": "3000"
+  },
+  {
+    "link": "https://5e.tools/items.html#cap%20of%20water%20breathing_dmg",
+    "name": "Cap of Water Breathing",
+    "price": "1000"
+  },
+  {
+    "link": "https://5e.tools/items.html#circlet%20of%20blasting_dmg",
+    "name": "Circlet of Blasting",
+    "price": "1000"
+  },
+  {
+    "link": "https://5e.tools/items.html#cloak%20of%20elvenkind_dmg",
+    "name": "Cloak of Elvenkind",
+    "price": "1000"
+  },
+  {
+    "link": "https://5e.tools/items.html#cloak%20of%20protection_dmg",
+    "name": "Cloak of Protection",
+    "price": "1500"
+  },
+  {
+    "link": "https://5e.tools/items.html#cloak%20of%20the%20manta%20ray_dmg",
+    "name": "Cloak of the Manta Ray",
+    "price": "1200"
+  },
+  {
+    "link": "https://5e.tools/items.html#decanter%20of%20endless%20water_dmg",
+    "name": "Decanter of Endless Water",
+    "price": "1900"
+  },
+  {
+    "link": "https://5e.tools/items.html#deck%20of%20illusions_dmg",
+    "name": "Deck of Illusions",
+    "price": "1800"
+  },
+  {
+    "link": "https://5e.tools/items.html#driftglobe_dmg",
+    "name": "Driftglobe",
+    "price": "500"
+  },
+  {
+    "link": "https://5e.tools/items.html#dust%20of%20disappearance_dmg",
+    "name": "Dust of Disappearance",
+    "price": "150"
+  },
+  {
+    "link": "https://5e.tools/items.html#dust%20of%20dryness_dmg",
+    "name": "Dust of Dryness",
+    "price": "150"
+  },
+  {
+    "link": "https://5e.tools/items.html#dust%20of%20sneezing%20and%20choking_dmg",
+    "name": "Dust of Sneezing and Choking",
+    "price": "250"
+  },
+  {
+    "link": "https://5e.tools/items.html#elemental%20gem%2c%20blue%20sapphire_dmg",
+    "name": "Elemental Gem, Blue Sapphire",
+    "price": "2000"
+  },
+  {
+    "link": "https://5e.tools/items.html#elemental%20gem%2c%20emerald_dmg",
+    "name": "Elemental Gem, Emerald",
+    "price": "2000"
+  },
+  {
+    "link": "https://5e.tools/items.html#elemental%20gem%2c%20red%20corundum_dmg",
+    "name": "Elemental Gem, Red Corundum",
+    "price": "2000"
+  },
+  {
+    "link": "https://5e.tools/items.html#elemental%20gem%2c%20yellow%20diamond_dmg",
+    "name": "Elemental Gem, Yellow Diamond",
+    "price": "2000"
+  },
+  {
+    "link": "https://5e.tools/items.html#eversmoking%20bottle_dmg",
+    "name": "Eversmoking Bottle",
+    "price": "500"
+  },
+  {
+    "link": "https://5e.tools/items.html#eyes%20of%20charming_dmg",
+    "name": "Eyes of Charming",
+    "price": "1000"
+  },
+  {
+    "link": "https://5e.tools/items.html#eyes%20of%20minute%20seeing_dmg",
+    "name": "Eyes of Minute Seeing",
+    "price": "1000"
+  },
+  {
+    "link": "https://5e.tools/items.html#eyes%20of%20the%20eagle_dmg",
+    "name": "Eyes of the Eagle",
+    "price": "1500"
+  },
+  {
+    "link": "https://5e.tools/items.html#feywild%20shard_tce",
+    "name": "Feywild Shard",
+    "price": "1900"
+  },
+  {
+    "link": "https://5e.tools/items.html#gauntlets%20of%20ogre%20power_dmg",
+    "name": "Gauntlets of Ogre Power",
+    "price": "3000"
+  },
+  {
+    "link": "https://5e.tools/items.html#gem%20of%20brightness_dmg",
+    "name": "Gem of Brightness",
+    "price": "1900"
+  },
+  {
+    "link": "https://5e.tools/items.html#gloves%20of%20missile%20snaring_dmg",
+    "name": "Gloves of Missile Snaring",
+    "price": "1500"
+  },
+  {
+    "link": "https://5e.tools/items.html#gloves%20of%20swimming%20and%20climbing_dmg",
+    "name": "Gloves of Swimming and Climbing",
+    "price": "1500"
+  },
+  {
+    "link": "https://5e.tools/items.html#gloves%20of%20thievery_dmg",
+    "name": "Gloves of Thievery",
+    "price": "1800"
+  },
+  {
+    "link": "https://5e.tools/items.html#goggles%20of%20night_dmg",
+    "name": "Goggles of Night",
+    "price": "750"
+  },
+  {
+    "link": "https://5e.tools/items.html#guardian%20emblem_tce",
+    "name": "Guardian Emblem",
+    "price": "1200"
+  },
+  {
+    "link": "https://5e.tools/items.html#hat%20of%20disguise_dmg",
+    "name": "Hat of Disguise",
+    "price": "1000"
+  },
+  {
+    "link": "https://5e.tools/items.html#headband%20of%20intellect_dmg",
+    "name": "Headband of Intellect",
+    "price": "3000"
+  },
+  {
+    "link": "https://5e.tools/items.html#helm%20of%20comprehending%20languages_dmg",
+    "name": "Helm of Comprehending Languages",
+    "price": "800"
+  },
+  {
+    "link": "https://5e.tools/items.html#helm%20of%20telepathy_dmg",
+    "name": "Helm of Telepathy",
+    "price": "2500"
+  },
+  {
+    "link": "https://5e.tools/items.html#immovable%20rod_dmg",
+    "name": "Immovable Rod",
+    "price": "2500"
+  },
+  {
+    "link": "https://5e.tools/items.html#javelin%20of%20lightning_dmg",
+    "name": "Javelin of Lightning",
+    "price": "1000"
+  },
+  {
+    "link": "https://5e.tools/items.html#weapon%20of%20warning_dmg",
+    "name": "Weapon of Warning (item + price)",
+    "price": "1000"
+  },
+  {
+    "link": "https://5e.tools/items.html#keoghtom's%20ointment_dmg",
+    "name": "Keoghtom's Ointment",
+    "price": "1000"
+  },
+  {
+    "link": "https://5e.tools/items.html#lantern%20of%20revealing_dmg",
+    "name": "Lantern of Revealing",
+    "price": "1000"
+  },
+  {
+    "link": "https://5e.tools/items.html#medallion%20of%20thoughts_dmg",
+    "name": "Medallion of Thoughts",
+    "price": "2000"
+  },
+  {
+    "link": "https://5e.tools/items.html#mariner's%20armor_dmg",
+    "name": "Mariner’s Armor (item + price)",
+    "price": "600"
+  },
+  {
+    "link": "https://5e.tools/items.html#mithral%20armor_dmg",
+    "name": "Mithril Armor (item + price)",
+    "price": "1200"
+  },
+  {
+    "link": "https://5e.tools/items.html#nature's%20mantle_tce",
+    "name": "Nature's Mantle",
+    "price": "800"
+  },
+  {
+    "link": "https://5e.tools/items.html#necklace%20of%20adaptation_dmg",
+    "name": "Necklace of Adaptation",
+    "price": "1500"
+  },
+  {
+    "link": "https://5e.tools/items.html#oil%20of%20slipperiness_dmg",
+    "name": "Oil of Slipperiness",
+    "price": "500"
+  },
+  {
+    "link": "https://5e.tools/items.html#pearl%20of%20power_dmg",
+    "name": "Pearl of Power",
+    "price": "1500"
+  },
+  {
+    "link": "https://5e.tools/items.html#periapt%20of%20health_dmg",
+    "name": "Periapt of Health",
+    "price": "2500"
+  },
+  {
+    "link": "https://5e.tools/items.html#periapt%20of%20wound%20closure_dmg",
+    "name": "Periapt of Wound Closure",
+    "price": "2500"
+  },
+  {
+    "link": "https://5e.tools/items.html#philter%20of%20love_dmg",
+    "name": "Philter of Love",
+    "price": "150"
+  },
+  {
+    "link": "https://5e.tools/items.html#pipes%20of%20haunting_dmg",
+    "name": "Pipes of Haunting",
+    "price": "1500"
+  },
+  {
+    "link": "https://5e.tools/items.html#pipes%20of%20the%20sewers_dmg",
+    "name": "Pipes of the Sewers",
+    "price": "2000"
+  },
+  {
+    "link": "https://5e.tools/items.html#quiver%20of%20ehlonna_dmg",
+    "name": "Quiver of Ehlonna",
+    "price": "800"
+  },
+  {
+    "link": "https://5e.tools/items.html#ring%20of%20jumping_dmg",
+    "name": "Ring of Jumping",
+    "price": "1500"
+  },
+  {
+    "link": "https://5e.tools/items.html#ring%20of%20mind%20shielding_dmg",
+    "name": "Ring of Mind Shielding",
+    "price": "2500"
+  },
+  {
+    "link": "https://5e.tools/items.html#ring%20of%20swimming_dmg",
+    "name": "Ring of Swimming",
+    "price": "1500"
+  },
+  {
+    "link": "https://5e.tools/items.html#ring%20of%20warmth_dmg",
+    "name": "Ring of Warmth",
+    "price": "1500"
+  },
+  {
+    "link": "https://5e.tools/items.html#ring%20of%20water%20walking_dmg",
+    "name": "Ring of Water Walking",
+    "price": "1450"
+  },
+  {
+    "link": "https://5e.tools/items.html#robe%20of%20useful%20items_dmg",
+    "name": "Robe of Useful Items",
+    "price": "2000"
+  },
+  {
+    "link": "https://5e.tools/items.html#rope%20of%20climbing_dmg",
+    "name": "Rope of Climbing",
+    "price": "1500"
+  },
+  {
+    "link": "https://5e.tools/items.html#sending%20stones_dmg",
+    "name": "Sending Stones x2",
+    "price": "700"
+  },
+  {
+    "link": "https://5e.tools/items.html#sentinel%20shield_dmg",
+    "name": "Sentinel Shield",
+    "price": "1500"
+  },
+  {
+    "link": "https://5e.tools/items.html#slippers%20of%20spider%20climbing_dmg",
+    "name": "Slippers of Spider Climbing",
+    "price": "2300"
+  },
+  {
+    "link": "https://5e.tools/items.html#staff%20of%20the%20adder_dmg",
+    "name": "Staff of the Adder",
+    "price": "2000"
+  },
+  {
+    "link": "https://5e.tools/items.html#staff%20of%20the%20python_dmg",
+    "name": "Staff of the Python",
+    "price": "2000"
+  },
+  {
+    "link": "https://5e.tools/items.html#stone%20of%20good%20luck_dmg",
+    "name": "Stone of Good Luck",
+    "price": "1900"
+  },
+  {
+    "link": "https://5e.tools/items.html#trident%20of%20fish%20command_dmg",
+    "name": "Trident of Fish Command",
+    "price": "2500"
+  },
+  {
+    "link": "https://5e.tools/items.html#wand%20of%20magic%20detection_dmg",
+    "name": "Wand of Magic Detection",
+    "price": "1200"
+  },
+  {
+    "link": "https://5e.tools/items.html#wand%20of%20magic%20missiles_dmg",
+    "name": "Wand of Magic Missiles",
+    "price": "4000"
+  },
+  {
+    "link": "https://5e.tools/items.html#wand%20of%20secrets_dmg",
+    "name": "Wand of Secrets",
+    "price": "900"
+  },
+  {
+    "link": "https://5e.tools/items.html#wand%20of%20web_dmg",
+    "name": "Wand of Web",
+    "price": "2000"
+  },
+  {
+    "link": "https://5e.tools/items.html#wind%20fan_dmg",
+    "name": "Wind Fan",
+    "price": "2000"
+  },
+  {
+    "link": "https://5e.tools/items.html#winged%20boots_dmg",
+    "name": "Winged Boots",
+    "price": "5000"
+  }
+]

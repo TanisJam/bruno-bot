@@ -1,0 +1,667 @@
+[
+  {
+    "link": "https://5e.tools/items.html#%2b2%20all-purpose%20tool_tce",
+    "name": "+2 All-Purpose Tool",
+    "price": "4500"
+  },
+  {
+    "link": "https://5e.tools/items.html#%2b2%20ammunition_dmg",
+    "name": " +2 Ammunition",
+    "price": "50"
+  },
+  {
+    "link": "https://5e.tools/items.html#%2b2%20amulet%20of%20the%20devout_tce",
+    "name": "+2 Amulet of the Devout",
+    "price": "4500"
+  },
+  {
+    "link": "https://5e.tools/items.html#%2b2%20arcane%20grimoire_tce",
+    "name": "+2 Arcane Grimoire",
+    "price": "4500"
+  },
+  {
+    "link": "https://5e.tools/items.html#%2b2%20bloodwell%20vial_tce",
+    "name": "+2 Bloodwell Vial",
+    "price": "4500"
+  },
+  {
+    "link": "https://5e.tools/items.html#%2b2%20moon%20sickle_tce",
+    "name": "+2 Moon Sickle",
+    "price": "4500"
+  },
+  {
+    "link": "https://5e.tools/items.html#%2b2%20rhythm-maker's%20drum_tce",
+    "name": "+2 Rhythm-Maker's Drum",
+    "price": "4500"
+  },
+  {
+    "link": "https://5e.tools/items.html#%2b2%20rod%20of%20the%20pact%20keeper_dmg",
+    "name": "+2 Rod of the Pact Keeper",
+    "price": "4500"
+  },
+  {
+    "link": "https://5e.tools/items.html#%2b2%20wand%20of%20the%20war%20mage_dmg",
+    "name": "+2 Wand of the War Mage",
+    "price": "4000"
+  },
+  {
+    "link": "https://5e.tools/items.html#%2b2%20shield%20(*)_dmg",
+    "name": " +2 Shield (item + price)",
+    "price": "7000"
+  },
+  {
+    "link": "https://5e.tools/items.html#%2b2%20weapon_dmg",
+    "name": " +2 Weapon (item + price)",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#alchemical%20compendium_tce",
+    "name": "Alchemical Compendium",
+    "price": "5000"
+  },
+  {
+    "link": "https://5e.tools/items.html#amulet%20of%20health_dmg",
+    "name": "Amulet of Health",
+    "price": "8000"
+  },
+  {
+    "link": "https://5e.tools/items.html#armor%20of%20vulnerability%20(bludgeoning)_dmg",
+    "name": "Armor of Vulnerability (Bludgeoning)",
+    "price": "10000"
+  },
+  {
+    "link": "https://5e.tools/items.html#armor%20of%20vulnerability%20(piercing)_dmg",
+    "name": "Armor of Vulnerability (Piercing)",
+    "price": "10000"
+  },
+  {
+    "link": "https://5e.tools/items.html#armor%20of%20vulnerability%20(slashing)_dmg",
+    "name": "Armor of Vulnerability (Slashing)",
+    "price": "10000"
+  },
+  {
+    "link": "https://5e.tools/items.html#arrow-catching%20shield_dmg",
+    "name": "Arrow-Catching Shield",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#astral%20shard_tce",
+    "name": "Astral Shard",
+    "price": "7500"
+  },
+  {
+    "link": "https://5e.tools/items.html#astromancy%20archive_tce",
+    "name": "Astromancy Archive",
+    "price": "7500"
+  },
+  {
+    "link": "https://5e.tools/items.html#atlas%20of%20endless%20horizons_tce",
+    "name": "Atlas of Endless Horizons",
+    "price": "8000"
+  },
+  {
+    "link": "https://5e.tools/items.html#bag%20of%20beans_dmg",
+    "name": "Bag of Beans",
+    "price": "4000"
+  },
+  {
+    "link": "https://5e.tools/items.html#bead%20of%20force_dmg",
+    "name": "Bead of Force",
+    "price": "3000"
+  },
+  {
+    "link": "https://5e.tools/items.html#bell%20branch_tce",
+    "name": "Bell Branch",
+    "price": "4500"
+  },
+  {
+    "link": "https://5e.tools/items.html#belt%20of%20dwarvenkind_dmg",
+    "name": "Belt of Dwarvenkind",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#belt%20of%20hill%20giant%20strength_dmg",
+    "name": "Belt of Hill Giant Strength",
+    "price": "8000"
+  },
+  {
+    "link": "https://5e.tools/items.html#boots%20of%20levitation_dmg",
+    "name": "Boots of Levitation",
+    "price": "5000"
+  },
+  {
+    "link": "https://5e.tools/items.html#boots%20of%20speed_dmg",
+    "name": "Boots of Speed",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#bowl%20of%20commanding%20water%20elementals_dmg",
+    "name": "Bowl of Commanding Water Elementals",
+    "price": "8000"
+  },
+  {
+    "link": "https://5e.tools/items.html#bracers%20of%20defense_dmg",
+    "name": "Bracers of Defense",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#brazier%20of%20commanding%20fire%20elementals_dmg",
+    "name": "Brazier of Commanding Fire Elementals",
+    "price": "8000"
+  },
+  {
+    "link": "https://5e.tools/items.html#cape%20of%20the%20mountebank_dmg",
+    "name": "Cape of the Mountebank",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#censer%20of%20controlling%20air%20elementals_dmg",
+    "name": "Censer of Controlling Air Elementals",
+    "price": "8000"
+  },
+  {
+    "link": "https://5e.tools/items.html#chime%20of%20opening_dmg",
+    "name": "Chime of Opening",
+    "price": "5000"
+  },
+  {
+    "link": "https://5e.tools/items.html#cloak%20of%20displacement_dmg",
+    "name": "Cloak of Displacement",
+    "price": "10000"
+  },
+  {
+    "link": "https://5e.tools/items.html#cloak%20of%20the%20bat_dmg",
+    "name": "Cloak of the Bat",
+    "price": "7000"
+  },
+  {
+    "link": "https://5e.tools/items.html#cube%20of%20force_dmg",
+    "name": "Cube of Force",
+    "price": "8000"
+  },
+  {
+    "link": "https://5e.tools/items.html#daern's%20instant%20fortress_dmg",
+    "name": "Daern's Instant Fortress",
+    "price": "8000"
+  },
+  {
+    "link": "https://5e.tools/items.html#dagger%20of%20venom_dmg",
+    "name": "Dagger of Venom",
+    "price": "2500"
+  },
+  {
+    "link": "https://5e.tools/items.html#devotee's%20censer_tce",
+    "name": "Devotee's Censer",
+    "price": "5000"
+  },
+  {
+    "link": "https://5e.tools/items.html#dimensional%20shackles_dmg",
+    "name": "Dimensional Shackles",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#duplicitous%20manuscript_tce",
+    "name": "Duplicitous Manuscript",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#elemental%20essence%20shard_tce",
+    "name": "Elemental Essence Shard",
+    "price": "5000"
+  },
+  {
+    "link": "https://5e.tools/items.html#elixir%20of%20health_dmg",
+    "name": "Elixir of Health",
+    "price": "3000"
+  },
+  {
+    "link": "https://5e.tools/items.html#elven%20chain_dmg",
+    "name": "Elven Chain",
+    "price": "5000"
+  },
+  {
+    "link": "https://5e.tools/items.html#far%20realm%20shard_tce",
+    "name": "Far Realm Shard",
+    "price": "7500"
+  },
+  {
+    "link": "https://5e.tools/items.html#figurine%20of%20wondrous%20power%2c%20bronze%20griffon_dmg",
+    "name": "Figurine of Wondrous Power, Bronze Griffon",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#figurine%20of%20wondrous%20power%2c%20ebony%20fly_dmg",
+    "name": "Figurine of Wondrous Power, Ebony Fly",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#figurine%20of%20wondrous%20power%2c%20golden%20lions_dmg",
+    "name": "Figurine of Wondrous Power, Golden Lions",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#figurine%20of%20wondrous%20power%2c%20ivory%20goats_dmg",
+    "name": "Figurine of Wondrous Power, Ivory Goats",
+    "price": "7000"
+  },
+  {
+    "link": "https://5e.tools/items.html#figurine%20of%20wondrous%20power%2c%20marble%20elephant_dmg",
+    "name": "Figurine of Wondrous Power, Marble Elephant",
+    "price": "8000"
+  },
+  {
+    "link": "https://5e.tools/items.html#figurine%20of%20wondrous%20power%2c%20onyx%20dog_dmg",
+    "name": "Figurine of Wondrous Power, Onyx Dog",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#figurine%20of%20wondrous%20power%2c%20serpentine%20owl_dmg",
+    "name": "Figurine of Wondrous Power, Serpentine Owl",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#folding%20boat_dmg",
+    "name": "Folding Boat",
+    "price": "5000"
+  },
+  {
+    "link": "https://5e.tools/items.html#fulminating%20treatise_tce",
+    "name": "Fulminating Treatise",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#gem%20of%20seeing_dmg",
+    "name": "Gem of Seeing",
+    "price": "7500"
+  },
+  {
+    "link": "https://5e.tools/items.html#glamoured%20studded%20leather_dmg",
+    "name": "Glamoured Studded Leather",
+    "price": "4500"
+  },
+  {
+    "link": "https://5e.tools/items.html#heart%20weaver's%20primer_tce",
+    "name": "Heart Weaver's Primer",
+    "price": "7000"
+  },
+  {
+    "link": "https://5e.tools/items.html#helm%20of%20teleportation_dmg",
+    "name": "Helm of Teleportation",
+    "price": "8000"
+  },
+  {
+    "link": "https://5e.tools/items.html#heward's%20handy%20haversack_dmg",
+    "name": "Heward's Handy Haversack",
+    "price": "2000"
+  },
+  {
+    "link": "https://5e.tools/items.html#horn%20of%20blasting_dmg",
+    "name": "Horn of Blasting",
+    "price": "4000"
+  },
+  {
+    "link": "https://5e.tools/items.html#horn%20of%20valhalla%2c%20brass_dmg",
+    "name": "Horn of Valhalla, Brass",
+    "price": "5000"
+  },
+  {
+    "link": "https://5e.tools/items.html#horn%20of%20valhalla%2c%20silver_dmg",
+    "name": "Horn of Valhalla, Silver",
+    "price": "7500"
+  },
+  {
+    "link": "https://5e.tools/items.html#horseshoes%20of%20speed_dmg",
+    "name": "Horseshoes of Speed",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#instrument%20of%20the%20bards%2c%20canaith%20mandolin_dmg",
+    "name": "Instrument of the Bards, Canaith Mandolin",
+    "price": "5000"
+  },
+  {
+    "link": "https://5e.tools/items.html#instrument%20of%20the%20bards%2c%20cli%20lyre_dmg",
+    "name": "Instrument of the Bards, Cli Lyre",
+    "price": "5000"
+  },
+  {
+    "link": "https://5e.tools/items.html#ioun%20stone%2c%20awareness_dmg",
+    "name": "Ioun Stone, Awareness",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#ioun%20stone%2c%20protection_dmg",
+    "name": "Ioun Stone, Protection",
+    "price": "6500"
+  },
+  {
+    "link": "https://5e.tools/items.html#ioun%20stone%2c%20reserve_dmg",
+    "name": "Ioun Stone, Reserve",
+    "price": "5500"
+  },
+  {
+    "link": "https://5e.tools/items.html#ioun%20stone%2c%20sustenance_dmg",
+    "name": "Ioun Stone, Sustenance",
+    "price": "5000"
+  },
+  {
+    "link": "https://5e.tools/items.html#iron%20bands%20of%20bilarro_dmg",
+    "name": "Iron Bands of Bilarro",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#libram%20of%20souls%20and%20flesh_tce",
+    "name": "Libram of Souls and Flesh",
+    "price": "7500"
+  },
+  {
+    "link": "https://5e.tools/items.html#lyre%20of%20building_tce",
+    "name": "Lyre of Building",
+    "price": "5000"
+  },
+  {
+    "link": "https://5e.tools/items.html#mace%20of%20disruption_dmg",
+    "name": "Mace of Disruption",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#mace%20of%20smiting_dmg",
+    "name": "Mace of Smiting",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#mace%20of%20terror_dmg",
+    "name": "Mace of Terror",
+    "price": "5000"
+  },
+  {
+    "link": "https://5e.tools/items.html#mantle%20of%20spell%20resistance_dmg",
+    "name": "Mantle of Spell Resistance",
+    "price": "7000"
+  },
+  {
+    "link": "https://5e.tools/items.html#mind%20lash_vgm",
+    "name": "Mind Lash",
+    "price": "6500"
+  },
+  {
+    "link": "https://5e.tools/items.html#necklace%20of%20fireballs_dmg",
+    "name": "Necklace of Fireballs",
+    "price": "5000"
+  },
+  {
+    "link": "https://5e.tools/items.html#necklace%20of%20prayer%20beads_dmg",
+    "name": "Necklace of Prayer Beads",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#oil%20of%20etherealness_dmg",
+    "name": "Oil of Etherealness",
+    "price": "5000"
+  },
+  {
+    "link": "https://5e.tools/items.html#outer%20essence%20shard_tce",
+    "name": "Outer Essence Shard",
+    "price": "5000"
+  },
+  {
+    "link": "https://5e.tools/items.html#periapt%20of%20proof%20against%20poison_dmg",
+    "name": "Periapt of Proof against Poison",
+    "price": "4000"
+  },
+  {
+    "link": "https://5e.tools/items.html#planecaller's%20codex_tce",
+    "name": "Planecaller's Codex",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#portable%20hole_dmg",
+    "name": "Portable Hole",
+    "price": "8000"
+  },
+  {
+    "link": "https://5e.tools/items.html#protective%20verses_tce",
+    "name": "Protective Verses",
+    "price": "6500"
+  },
+  {
+    "link": "https://5e.tools/items.html#quaal's%20feather%20token%2c%20anchor_dmg",
+    "name": "Quaal's Feather Token, Anchor",
+    "price": "4000"
+  },
+  {
+    "link": "https://5e.tools/items.html#quaal's%20feather%20token%2c%20bird_dmg",
+    "name": "Quaal's Feather Token, Bird",
+    "price": "4000"
+  },
+  {
+    "link": "https://5e.tools/items.html#quaal's%20feather%20token%2c%20fan_dmg",
+    "name": "Quaal's Feather Token, Fan",
+    "price": "4000"
+  },
+  {
+    "link": "https://5e.tools/items.html#quaal's%20feather%20token%2c%20swan%20boat_dmg",
+    "name": "Quaal's Feather Token, Swan Boat",
+    "price": "5000"
+  },
+  {
+    "link": "https://5e.tools/items.html#quaal's%20feather%20token%2c%20tree_dmg",
+    "name": "Quaal's Feather Token, Tree",
+    "price": "4000"
+  },
+  {
+    "link": "https://5e.tools/items.html#quaal's%20feather%20token%2c%20whip_dmg",
+    "name": "Quaal's Feather Token, Whip",
+    "price": "4000"
+  },
+  {
+    "link": "https://5e.tools/items.html#reveler's%20concertina_tce",
+    "name": "Reveler's Concertina",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#ring%20of%20acid%20resistance_dmg",
+    "name": "Ring of Acid Resistance",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#ring%20of%20acid%20resistance_dmg",
+    "name": "Ring of Animal Influence",
+    "price": "5000"
+  },
+  {
+    "link": "https://5e.tools/items.html#ring%20of%20cold%20resistance_dmg",
+    "name": "Ring of Cold Resistance",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#ring%20of%20evasion_dmg",
+    "name": "Ring of Evasion",
+    "price": "7000"
+  },
+  {
+    "link": "https://5e.tools/items.html#ring%20of%20feather%20falling_dmg",
+    "name": "Ring of Feather Falling",
+    "price": "5000"
+  },
+  {
+    "link": "https://5e.tools/items.html#ring%20of%20fire%20resistance_dmg",
+    "name": "Ring of Fire Resistance",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#ring%20of%20force%20resistance_dmg",
+    "name": "Ring of Force Resistance",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#ring%20of%20free%20action_dmg",
+    "name": "Ring of Free Action",
+    "price": "7000"
+  },
+  {
+    "link": "https://5e.tools/items.html#ring%20of%20lightning%20resistance_dmg",
+    "name": "Ring of Lightning Resistance",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#ring%20of%20necrotic%20resistance_dmg",
+    "name": "Ring of Necrotic Resistance",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#ring%20of%20poison%20resistance_dmg",
+    "name": "Ring of Poison Resistance",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#ring%20of%20protection_dmg",
+    "name": "Ring of Protection",
+    "price": "7000"
+  },
+  {
+    "link": "https://5e.tools/items.html#ring%20of%20psychic%20resistance_dmg",
+    "name": "Ring of Psychic Resistance",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#ring%20of%20radiant%20resistance_dmg",
+    "name": "Ring of Radiant Resistance",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#ring%20of%20spell%20storing_dmg",
+    "name": "Ring of Spell Storing",
+    "price": "8000"
+  },
+  {
+    "link": "https://5e.tools/items.html#ring%20of%20the%20ram_dmg",
+    "name": "Ring of the Ram",
+    "price": "7000"
+  },
+  {
+    "link": "https://5e.tools/items.html#ring%20of%20thunder%20resistance_dmg",
+    "name": "Ring of Thunder Resistance",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#ring%20of%20x-ray%20vision_dmg",
+    "name": "Ring of X-ray Vision",
+    "price": "7000"
+  },
+  {
+    "link": "https://5e.tools/items.html#robe%20of%20eyes_dmg",
+    "name": "Robe of Eyes",
+    "price": "7000"
+  },
+  {
+    "link": "https://5e.tools/items.html#rod%20of%20rulership_dmg",
+    "name": "Rod of Rulership",
+    "price": "7000"
+  },
+  {
+    "link": "https://5e.tools/items.html#rope%20of%20entanglement_dmg",
+    "name": "Rope of Entanglement",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#scroll%20of%20protection_dmg",
+    "name": "Scroll of Protection",
+    "price": "4000"
+  },
+  {
+    "link": "https://5e.tools/items.html#shadowfell%20shard_tce",
+    "name": "Shadowfell Shard",
+    "price": "5000"
+  },
+  {
+    "link": "https://5e.tools/items.html#shield%20of%20far%20sight_vgm",
+    "name": "Shield of Far Sight",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#shield%20of%20far%20sight_vgm",
+    "name": "Shield of Missile Attraction",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#staff%20of%20charming_dmg",
+    "name": "Staff of Charming",
+    "price": "5000"
+  },
+  {
+    "link": "https://5e.tools/items.html#staff%20of%20healing_dmg",
+    "name": "Staff of Healing",
+    "price": "8000"
+  },
+  {
+    "link": "https://5e.tools/items.html#staff%20of%20swarming%20insects_dmg",
+    "name": "Staff of Swarming Insects",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#staff%20of%20the%20woodlands_dmg",
+    "name": "Staff of the Woodlands",
+    "price": "8000"
+  },
+  {
+    "link": "https://5e.tools/items.html#staff%20of%20withering_dmg",
+    "name": "Staff of Withering",
+    "price": "5000"
+  },
+  {
+    "link": "https://5e.tools/items.html#stone%20of%20controlling%20earth%20elementals_dmg",
+    "name": "Stone of Controlling Earth Elementals",
+    "price": "8000"
+  },
+  {
+    "link": "https://5e.tools/items.html#sun%20blade_dmg",
+    "name": "Sun Blade",
+    "price": "10000"
+  },
+  {
+    "link": "https://5e.tools/items.html#tentacle%20rod_dmg",
+    "name": "Tentacle Rod",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#wand%20of%20binding_dmg",
+    "name": "Wand of Binding",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#wand%20of%20enemy%20detection_dmg",
+    "name": "Wand of Enemy Detection",
+    "price": "7000"
+  },
+  {
+    "link": "https://5e.tools/items.html#wand%20of%20fear_dmg",
+    "name": "Wand of Fear",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#wand%20of%20fireballs_dmg",
+    "name": "Wand of Fireballs",
+    "price": "7500"
+  },
+  {
+    "link": "https://5e.tools/items.html#wand%20of%20lightning%20bolts_dmg",
+    "name": "Wand of Lightning Bolts",
+    "price": "7500"
+  },
+  {
+    "link": "https://5e.tools/items.html#wand%20of%20paralysis_dmg",
+    "name": "Wand of Paralysis",
+    "price": "6000"
+  },
+  {
+    "link": "https://5e.tools/items.html#wand%20of%20wonder_dmg",
+    "name": "Wand of Wonder",
+    "price": "6500"
+  },
+  {
+    "link": "https://5e.tools/items.html#wings%20of%20flying_dmg",
+    "name": "Wings of Flying",
+    "price": "12000"
+  }
+]
