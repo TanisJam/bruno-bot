@@ -131,6 +131,14 @@ export class DatabaseService {
   }
 
   /**
+   * Get reminder by ID
+   */
+  public getReminderById(id: number): Types.Reminder | undefined {
+    const stmt = this.db.prepare('SELECT * FROM reminders WHERE id = ?');
+    return stmt.get(id) as Types.Reminder | undefined;
+  }
+
+  /**
    * Get enabled reminders for a guild
    */
   public getEnabledReminders(guildId: string): Types.Reminder[] {
@@ -142,8 +150,18 @@ export class DatabaseService {
    * Update a reminder
    */
   public updateReminder(id: number, updates: Partial<Omit<Types.Reminder, 'id' | 'guild_id' | 'created_at'>>): Types.Reminder | undefined {
-    const fields = Object.keys(updates).map(key => `${key} = ?`).join(', ');
-    const values = Object.values(updates);
+    // Filtrar solo los campos que existen en la tabla reminders
+    const validFields = ['channel_id', 'message', 'day_of_week', 'time', 'enabled'];
+    const filteredUpdates: any = {};
+    
+    for (const [key, value] of Object.entries(updates)) {
+      if (validFields.includes(key)) {
+        filteredUpdates[key] = value;
+      }
+    }
+    
+    const fields = Object.keys(filteredUpdates).map(key => `${key} = ?`).join(', ');
+    const values = Object.values(filteredUpdates);
 
     const stmt = this.db.prepare(`
       UPDATE reminders
@@ -158,9 +176,9 @@ export class DatabaseService {
   /**
    * Delete a reminder
    */
-  public deleteReminder(id: number): boolean {
-    const stmt = this.db.prepare('DELETE FROM reminders WHERE id = ?');
-    const result = stmt.run(id);
+  public deleteReminder(id: number, guildId: string): boolean {
+    const stmt = this.db.prepare('DELETE FROM reminders WHERE id = ? AND guild_id = ?');
+    const result = stmt.run(id, guildId);
     return result.changes > 0;
   }
 
