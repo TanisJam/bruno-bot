@@ -1,14 +1,29 @@
-import { Client, IntentsBitField, Events, Collection } from 'discord.js';
+import {
+  Client,
+  IntentsBitField,
+  Events,
+  Collection,
+  ActionRowBuilder,
+  StringSelectMenuBuilder,
+  ChannelSelectMenuBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  ModalBuilder,
+  TextInputBuilder,
+  TextInputStyle,
+  EmbedBuilder,
+  Interaction,
+  ChannelType
+} from 'discord.js';
 import config from './config';
 import * as commandsModules from './commands';
+import { reminderCreationState, DAYS_OF_WEEK, getDayName, isValidTime, renderEditDashboard } from './commands/reminder';
 import { Command } from './types/Command';
 import { logger } from './utils/logger';
 import { DatabaseService } from './services/database.service';
 import { SchedulerService } from './services/scheduler.service';
 
-/**
- * Create Discord client with necessary intents
- */
+// Main Discord Client
 export const client = new Client({
   intents: [
     IntentsBitField.Flags.Guilds,
@@ -17,49 +32,32 @@ export const client = new Client({
   ],
 });
 
-/**
- * Collection to store commands
- */
+// Command Collection
 client.commands = new Collection<string, Command>();
-
-
-/**
- * Initialize and register commands
- */
 const commands = Object(commandsModules) as Record<string, Command>;
-Object.keys(commands).forEach((commandName) => {
+for (const commandName in commands) {
   const command = commands[commandName];
   if (command) {
     client.commands.set(commandName, command);
     logger.info(`Command registered: ${commandName}`);
   }
-});
+}
 
-/**
- * Initialize database and scheduler
- */
+// Initialize Services
 let schedulerService: SchedulerService;
-
 try {
-  // Initialize database
   const db = DatabaseService.getInstance(config.DB_PATH);
   logger.info('✅ Database service initialized');
-
-  // Initialize scheduler (will start after bot is ready)
   schedulerService = new SchedulerService(client, db);
 } catch (error) {
   logger.error('❌ Error initializing services:', error);
   process.exit(1);
 }
 
-/**
- * Event when bot is ready
- */
+// Client Ready Event
 client.once(Events.ClientReady, async () => {
   logger.info(`🤖 ${client.user?.username} is online and ready!`);
   logger.info(`📊 Serving ${client.guilds.cache.size} guilds`);
-
-  // Ensure all guilds are registered in database
   for (const [guildId, guild] of client.guilds.cache) {
     try {
       DatabaseService.getInstance().ensureGuild(guildId, guild.name);
@@ -68,230 +66,251 @@ client.once(Events.ClientReady, async () => {
       logger.error(`❌ Error registering guild ${guildId}:`, error);
     }
   }
-
-  // Start scheduler
   schedulerService.start();
 });
 
-/**
- * Handle command interactions
- */
-client.on(Events.InteractionCreate, async (interaction) => {
-  // Handle slash commands
-  if (interaction.isCommand()) {
-    const { commandName } = interaction;
-    const command = client.commands.get(commandName);
-
-    if (!command) {
-      logger.warn(`Unknown command attempted: ${commandName}`);
-      return;
-    }
-
-    try {
-      logger.info(`🎮 ${interaction.user.username} executed: /${commandName}`);
-      await command.execute(interaction, client);
-    } catch (error) {
-      logger.error(`❌ Error executing command ${commandName}:`, error);
-
-      // Respond to user with error message
-      const errorMessage = '❌ Hubo un error ejecutando este comando. Inténtalo de nuevo más tarde.';
-
-      if (!interaction.replied && !interaction.deferred) {
-        await interaction.reply({
-          content: errorMessage,
-          ephemeral: true
-        });
-      } else if (interaction.deferred) {
-        await interaction.editReply({
-          content: errorMessage
-        });
-      } else {
-        await interaction.followUp({
-          content: errorMessage,
-          ephemeral: true
-        });
+// Interaction Create Event
+client.on(Events.InteractionCreate, async (interaction: Interaction) => {
+  try {
+    if (interaction.isChatInputCommand()) {
+      const command = client.commands.get(interaction.commandName);
+      if (command) {
+        logger.info(`🎮 ${interaction.user.username} executed: /${interaction.commandName}`);
+        await command.execute(interaction, client);
       }
-    }
-    return;
-  }
-
-  // Handle modal submissions
-  if (interaction.isModalSubmit()) {
-    try {
-      const customId = interaction.customId;
-
-      // Handle shop modals
-      if (customId.startsWith('shop_')) {
+    } else if (interaction.isAnySelectMenu()) {
+        if (interaction.customId.startsWith('reminder_create')) await handleReminderCreateFlow(interaction);
+        if (interaction.customId.startsWith('reminder_edit')) await handleReminderEditFlow(interaction);
+    } else if (interaction.isButton()) {
+        if (interaction.customId.startsWith('reminder_create')) await handleReminderCreateFlow(interaction);
+        if (interaction.customId.startsWith('reminder_edit')) await handleReminderEditFlow(interaction);
+    } else if (interaction.isModalSubmit()) {
+      if (interaction.customId.startsWith('shop_')) {
         await handleShopModal(interaction);
+      } else if (interaction.customId.startsWith('reminder_create')) {
+        await handleReminderCreateModal(interaction);
+      } else if (interaction.customId.startsWith('reminder_edit')) {
+        await handleReminderEditModal(interaction);
       }
-    } catch (error) {
-      logger.error('❌ Error handling modal submission:', error);
-
-      const errorMessage = '❌ Hubo un error procesando el formulario.';
-
-      if (!interaction.replied && !interaction.deferred) {
-        await interaction.reply({
-          content: errorMessage,
-          ephemeral: true
-        });
+    }
+  } catch (error) {
+    logger.error('❌ Error during interaction:', error);
+    if (interaction.isRepliable()) {
+      const errorMessage = '❌ Hubo un error procesando la interacción.';
+      if (interaction.replied || interaction.deferred) {
+        await interaction.followUp({ content: errorMessage, ephemeral: true });
+      } else {
+        await interaction.reply({ content: errorMessage, ephemeral: true });
       }
     }
   }
 });
 
-/**
- * Handle shop modal submissions
- */
+// --- Reminder Flow Handlers ---
+
+async function handleReminderCreateFlow(interaction: any) {
+    const [_, __, step, stateId] = interaction.customId.split('_');
+    const state = reminderCreationState.get(stateId);
+    if (!state) return interaction.update({ content: '❌ Esta interacción ha expirado.', components: [], embeds: [] });
+
+    const embed = new EmbedBuilder(interaction.message.embeds[0].data);
+
+    if (step === 'channel') {
+        state.channel_id = interaction.values[0];
+        const daySelect = new StringSelectMenuBuilder().setCustomId(`reminder_create_day_${stateId}`).setPlaceholder('Selecciona un día').addOptions(DAYS_OF_WEEK.map(d => ({ label: d.name, value: d.value })));
+        const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(daySelect);
+        embed.setTitle('Paso 2 de 3: Día de la semana').setDescription('Ahora, selecciona el día.');
+        await interaction.update({ embeds: [embed], components: [row] });
+    }
+
+    if (step === 'day') {
+        state.day_of_week = parseInt(interaction.values[0]);
+        const detailsButton = new ButtonBuilder().setCustomId(`reminder_create_details_${stateId}`).setLabel('Añadir Hora y Mensaje').setStyle(ButtonStyle.Primary);
+        const row = new ActionRowBuilder<ButtonBuilder>().addComponents(detailsButton);
+        embed.setTitle('Paso 3 de 3: Detalles Finales').setDescription('Haz clic para añadir la hora y el mensaje.');
+        await interaction.update({ embeds: [embed], components: [row] });
+    }
+
+    if (step === 'details') {
+        const detailsModal = new ModalBuilder().setCustomId(`reminder_create_details-modal_${stateId}`).setTitle('Establecer Hora y Mensaje');
+        const timeInput = new TextInputBuilder().setCustomId('time_input').setLabel('Hora (formato 24h: HH:MM)').setStyle(TextInputStyle.Short).setRequired(true);
+        const messageInput = new TextInputBuilder().setCustomId('message_input').setLabel('Mensaje del recordatorio').setStyle(TextInputStyle.Paragraph).setRequired(true);
+        detailsModal.addComponents(new ActionRowBuilder<TextInputBuilder>().addComponents(timeInput), new ActionRowBuilder<TextInputBuilder>().addComponents(messageInput));
+        await interaction.showModal(detailsModal);
+    }
+
+    if (step === 'save') {
+        const db = DatabaseService.getInstance();
+        const reminder = db.createReminder(state as any);
+        if (!reminder) return interaction.update({ content: '❌ Hubo un error al guardar.', embeds: [], components: [] });
+
+        const finalEmbed = new EmbedBuilder().setColor(0x00ff00).setTitle('✅ Recordatorio Creado').setDescription('El recordatorio se ha guardado correctamente.');
+        await interaction.update({ embeds: [finalEmbed], components: [] });
+        reminderCreationState.delete(stateId);
+    }
+}
+
+async function handleReminderEditFlow(interaction: any) {
+    const [_, __, action, stateId] = interaction.customId.split('_');
+    const state = reminderCreationState.get(stateId);
+    if (!state) return interaction.update({ content: '❌ Esta interacción ha expirado.', components: [], embeds: [] });
+
+    const [mainAction, subAction] = action.split('-');
+
+    if (mainAction === 'show') {
+        if (subAction === 'channel') {
+            const channelSelect = new ChannelSelectMenuBuilder().setCustomId(`reminder_edit_set-channel_${stateId}`).setPlaceholder('Selecciona el nuevo canal').addChannelTypes(ChannelType.GuildText);
+            const row = new ActionRowBuilder<ChannelSelectMenuBuilder>().addComponents(channelSelect);
+            return interaction.update({ components: [row] });
+        }
+        if (subAction === 'day') {
+            const daySelect = new StringSelectMenuBuilder().setCustomId(`reminder_edit_set-day_${stateId}`).setPlaceholder('Selecciona el nuevo día').addOptions(DAYS_OF_WEEK.map(d => ({ label: d.name, value: d.value })));
+            const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(daySelect);
+            return interaction.update({ components: [row] });
+        }
+        if (subAction === 'details') {
+            const detailsModal = new ModalBuilder().setCustomId(`reminder_edit_details-modal_${stateId}`).setTitle('Establecer Hora y Mensaje');
+            const timeInput = new TextInputBuilder().setCustomId('time_input').setLabel('Hora (formato 24h: HH:MM)').setStyle(TextInputStyle.Short).setRequired(true).setValue(state.time);
+            const messageInput = new TextInputBuilder().setCustomId('message_input').setLabel('Mensaje del recordatorio').setStyle(TextInputStyle.Paragraph).setRequired(true).setValue(state.message);
+            detailsModal.addComponents(new ActionRowBuilder<TextInputBuilder>().addComponents(timeInput), new ActionRowBuilder<TextInputBuilder>().addComponents(messageInput));
+            return interaction.showModal(detailsModal);
+        }
+    }
+
+    if (mainAction === 'set') {
+        if (subAction === 'channel') state.channel_id = interaction.values[0];
+        if (subAction === 'day') state.day_of_week = parseInt(interaction.values[0]);
+        await renderEditDashboard(interaction, state);
+    }
+
+    if (mainAction === 'save') {
+        const db = DatabaseService.getInstance();
+        const reminder = db.updateReminder(state.id, state);
+        if (!reminder) return interaction.update({ content: '❌ Hubo un error al guardar.', embeds: [], components: [] });
+        
+        const finalEmbed = new EmbedBuilder().setColor(0x00ff00).setTitle('✅ Recordatorio Actualizado').setDescription('El recordatorio se ha guardado correctamente.');
+        await interaction.update({ embeds: [finalEmbed], components: [] });
+        reminderCreationState.delete(stateId);
+    }
+
+    if (mainAction === 'cancel') {
+        reminderCreationState.delete(stateId);
+        await interaction.update({ content: 'Operación cancelada.', embeds: [], components: [] });
+    }
+}
+
+async function handleReminderCreateModal(interaction: any) {
+    const [_, __, action, ___, stateId] = interaction.customId.split('_');
+    const state = reminderCreationState.get(stateId);
+    if (!state) return interaction.reply({ content: '❌ Esta interacción ha expirado.', ephemeral: true });
+
+    if (action === 'details-modal') {
+        const time = interaction.fields.getTextInputValue('time_input');
+        if (!isValidTime(time)) {
+            return interaction.reply({ content: '❌ Formato de hora inválido. Usa HH:MM.', ephemeral: true });
+        }
+        state.time = time;
+        state.message = interaction.fields.getTextInputValue('message_input');
+
+        const embed = new EmbedBuilder(interaction.message.embeds[0].data)
+            .setTitle('Creación de Recordatorio (Completo)')
+            .setDescription('Todos los datos han sido rellenados. Haz clic en guardar para finalizar.');
+        const saveButton = new ButtonBuilder().setCustomId(`reminder_create_save_${stateId}`).setLabel('Guardar Recordatorio').setStyle(ButtonStyle.Success);
+        const row = new ActionRowBuilder<ButtonBuilder>().addComponents(saveButton);
+        await interaction.update({ embeds: [embed], components: [row] });
+    }
+}
+
+async function handleReminderEditModal(interaction: any) {
+    // Corregir el parseo del customId para manejar "details-modal" correctamente
+    const parts = interaction.customId.split('_');
+    const action = parts[2]; // "details-modal"
+    const stateId = parts[3]; // ID del usuario
+    
+    const state = reminderCreationState.get(stateId);
+    if (!state) {
+        return interaction.reply({ content: '❌ Esta interacción ha expirado.', ephemeral: true });
+    }
+
+    if (action === 'details-modal') {
+        const time = interaction.fields.getTextInputValue('time_input');
+        if (!isValidTime(time)) {
+            return interaction.reply({ content: '❌ Formato de hora inválido. Usa HH:MM.', ephemeral: true });
+        }
+        
+        state.time = time;
+        state.message = interaction.fields.getTextInputValue('message_input');
+        await renderEditDashboard(interaction, state);
+    }
+}
+
+// --- Shop Modal Handler ---
+
 async function handleShopModal(interaction: any) {
   const { parseItemModalSubmission } = await import('./utils/shop-modals');
-  const { DatabaseService } = await import('./services/database.service');
-  const { EmbedBuilder } = await import('discord.js');
-
-  const customId = interaction.customId;
   const db = DatabaseService.getInstance(config.DB_PATH);
 
-  // Get field values
+  const customId = interaction.customId;
   const name = interaction.fields.getTextInputValue('item_name');
   const type = interaction.fields.getTextInputValue('item_type');
   const rarity = interaction.fields.getTextInputValue('item_rarity');
   const price = interaction.fields.getTextInputValue('item_price');
   const description = interaction.fields.getTextInputValue('item_description');
 
-  // Parse and validate
   const result = parseItemModalSubmission(name, type, rarity, price, description);
 
   if ('error' in result) {
-    await interaction.reply({
-      content: `❌ ${result.error}`,
-      ephemeral: true
-    });
-    return;
+    return interaction.reply({ content: `❌ ${result.error}`, ephemeral: true });
   }
 
-  // Handle add item
   if (customId === 'shop_add_item') {
-    const item = db.createItem({
-      guild_id: interaction.guild?.id || null,
-      name: result.name,
-      type: result.type,
-      rarity: result.rarity,
-      base_price: result.price,
-      link: null,
-      description: result.description
+    const item = db.createItem({ 
+        guild_id: interaction.guild?.id || null, 
+        name: result.name, 
+        type: result.type, 
+        rarity: result.rarity, 
+        base_price: result.price, 
+        description: result.description, 
+        link: null 
     });
-
-    const embed = new EmbedBuilder()
-      .setColor(0x00ff00)
-      .setTitle('✅ Ítem Agregado al Catálogo')
-      .setDescription(`**${item.name}** ha sido agregado exitosamente.`)
-      .addFields(
-        { name: 'ID', value: item.id.toString(), inline: true },
-        { name: 'Tipo', value: item.type, inline: true },
-        { name: 'Rareza', value: item.rarity, inline: true },
-        { name: 'Precio Base', value: `${item.base_price} po`, inline: true }
-      )
-      .setTimestamp();
-
-    if (item.description) {
-      embed.addFields({ name: 'Descripción', value: item.description, inline: false });
-    }
-
+    const embed = new EmbedBuilder().setColor(0x00ff00).setTitle('✅ Ítem Agregado').setDescription(`**${item.name}** ha sido agregado.`);
     await interaction.reply({ embeds: [embed] });
-    logger.info(`Item ${item.id} added to catalog by ${interaction.user.username}`);
-  }
-
-  // Handle edit item
-  else if (customId.startsWith('shop_edit_item_')) {
+  } else if (customId.startsWith('shop_edit_item_')) {
     const itemId = parseInt(customId.replace('shop_edit_item_', ''));
-
-    const updated = db.updateItem(itemId, {
-      name: result.name,
-      type: result.type,
-      rarity: result.rarity,
-      base_price: result.price,
-      description: result.description
-    });
-
+    const updated = db.updateItem(itemId, result);
     if (!updated) {
-      await interaction.reply({
-        content: '❌ Error al actualizar el ítem.',
-        ephemeral: true
-      });
-      return;
+        return interaction.reply({ content: '❌ Error al actualizar el ítem.', ephemeral: true });
     }
-
-    const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
-      .setTitle('✅ Ítem Actualizado')
-      .setDescription(`**${updated.name}** ha sido actualizado exitosamente.`)
-      .addFields(
-        { name: 'ID', value: updated.id.toString(), inline: true },
-        { name: 'Tipo', value: updated.type, inline: true },
-        { name: 'Rareza', value: updated.rarity, inline: true },
-        { name: 'Precio Base', value: `${updated.base_price} po`, inline: true }
-      )
-      .setTimestamp();
-
-    if (updated.description) {
-      embed.addFields({ name: 'Descripción', value: updated.description, inline: false });
-    }
-
+    const embed = new EmbedBuilder().setColor(0x0099ff).setTitle('✅ Ítem Actualizado').setDescription(`**${updated.name}** ha sido actualizado.`);
     await interaction.reply({ embeds: [embed] });
-    logger.info(`Item ${itemId} updated in catalog by ${interaction.user.username}`);
   }
 }
 
-/**
- * Handle errors and warnings
- */
-client.on('error', (error) => {
-  logger.error('Discord client error:', error);
-});
+// --- Process Handlers ---
 
-client.on('warn', (warning) => {
-  logger.warn('Discord client warning:', warning);
-});
-
-/**
- * Log in the bot
- */
-client.login(config.TOKEN).catch(error => {
-  logger.error('❌ Error logging in the bot:', error);
-  process.exit(1);
-});
-
-/**
- * Handle uncaught rejections
- */
-process.on('unhandledRejection', (error) => {
-  logger.error('🚨 Unhandled rejection:', error);
-});
-
+process.on('unhandledRejection', (error) => logger.error('🚨 Unhandled rejection:', error));
 process.on('uncaughtException', (error) => {
   logger.error('🚨 Uncaught exception:', error);
   process.exit(1);
 });
 
-/**
- * Handle graceful shutdown
- */
-process.on('SIGINT', () => {
-  logger.info('🛑 Received SIGINT, shutting down gracefully...');
+const shutdown = () => {
+  logger.info('🛑 Shutting down gracefully...');
   schedulerService.stop();
   DatabaseService.getInstance().close();
   process.exit(0);
+};
+
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);
+
+// Discord Client Login
+client.login(config.TOKEN).catch(error => {
+  logger.error('❌ Error logging in:', error);
+  process.exit(1);
 });
 
-process.on('SIGTERM', () => {
-  logger.info('🛑 Received SIGTERM, shutting down gracefully...');
-  schedulerService.stop();
-  DatabaseService.getInstance().close();
-  process.exit(0);
-});
-
-/**
- * Extend Discord.js Client interface to include commands collection
- */
+// Extend Discord.js Client interface
 declare module 'discord.js' {
   interface Client {
     commands: Collection<string, Command>;
