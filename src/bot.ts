@@ -200,14 +200,20 @@ async function handleReminderEditFlow(interaction: any) {
 }
 
 async function handleReminderCreateModal(interaction: any) {
-    const [_, __, action, ___, stateId] = interaction.customId.split('_');
+    // Corregir el parseo del customId para manejar "details-modal" correctamente
+    const parts = interaction.customId.split('_');
+    const action = parts[2]; // "details-modal"
+    const stateId = parts[3]; // ID del usuario
+    
     const state = reminderCreationState.get(stateId);
-    if (!state) return interaction.reply({ content: '❌ Esta interacción ha expirado.', ephemeral: true });
+    if (!state) {
+        return interaction.update({ content: '❌ Esta interacción ha expirado.', embeds: [], components: [] });
+    }
 
     if (action === 'details-modal') {
         const time = interaction.fields.getTextInputValue('time_input');
         if (!isValidTime(time)) {
-            return interaction.reply({ content: '❌ Formato de hora inválido. Usa HH:MM.', ephemeral: true });
+            return interaction.update({ content: '❌ Formato de hora inválido. Usa HH:MM.', embeds: [], components: [] });
         }
         state.time = time;
         state.message = interaction.fields.getTextInputValue('message_input');
