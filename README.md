@@ -1,6 +1,6 @@
 # Bruno Bot - D&D 5e Campaign Manager
 
-Un bot de Discord completo para automatizar la gestión de campañas de D&D 5e, optimizar la experiencia del jugador y facilitar el trabajo del Dungeon Master (DM) a través de comandos de barra (/).
+Un bot de Discord para buscar personajes de Nivel20 y gestionar campañas de D&D 5e, optimizando la experiencia del jugador y facilitando el trabajo del Dungeon Master (DM) a través de comandos de barra (/).
 
 ## 🚀 Características del Producto (MVP)
 
@@ -41,22 +41,24 @@ Un bot de Discord completo para automatizar la gestión de campañas de D&D 5e, 
 1. **Clona el repositorio**:
    ```bash
    git clone <tu-repositorio>
-   cd nivel20-character-bot
+   cd bruno-bot
    ```
 
 2. **Instala las dependencias**:
    ```bash
-   npm install
-   # o si prefieres pnpm
    pnpm install
    ```
 
 3. **Configura las variables de entorno**:
-   Crea un archivo `.env` en la raíz del proyecto:
+   Crea un archivo `.env` en la raíz del proyecto basado en `.env.example`:
    ```env
-   CLIENT_ID=tu_client_id_de_discord
-   TOKEN=tu_token_del_bot
-   GUILD_ID=id_de_tu_servidor_discord
+   # Discord Bot Configuration
+   CLIENT_ID=your_discord_client_id_here
+   TOKEN=your_discord_bot_token_here
+   GUILD_ID=your_discord_guild_id_here
+
+   # Environment
+   NODE_ENV=development
 
    # Base de datos (opcional, por defecto usa ./data/bruno-bot.db)
    DB_PATH=./data/bruno-bot.db
@@ -74,17 +76,17 @@ Un bot de Discord completo para automatizar la gestión de campañas de D&D 5e, 
 
 5. **Compila el proyecto**:
    ```bash
-   npm run build
+   pnpm run build
    ```
 
 6. **Despliega los comandos de Discord**:
    ```bash
-   npm run deploy:commands
+   pnpm run deploy:commands
    ```
 
 7. **Inicia el bot**:
    ```bash
-   npm start
+   pnpm start
    ```
 
 ## 🐳 Despliegue con Docker
@@ -115,24 +117,31 @@ docker run -e CLIENT_ID=tu_client_id \
 
 ### Docker Compose (Recomendado)
 
-Crea un archivo `docker-compose.yml`:
+El proyecto incluye un archivo `docker-compose.yaml` configurado:
 
 ```yaml
 version: '3.8'
 
 services:
   bruno-bot:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     environment:
+      - NODE_ENV=production
       - CLIENT_ID=${CLIENT_ID}
       - TOKEN=${TOKEN}
       - GUILD_ID=${GUILD_ID}
-      - DATABASE_URL=${DATABASE_URL}
-      - TIMEZONE=${TIMEZONE:-America/Argentina/Buenos_Aires}
+      - DB_PATH=/app/data/bruno-bot.db
+    volumes:
+      - bruno-bot-data:/app/data
     restart: unless-stopped
+
+volumes:
+  bruno-bot-data:
 ```
 
-Luego ejecuta:
+Ejecuta:
 
 ```bash
 # Construir y ejecutar
@@ -241,10 +250,10 @@ Gestiona el catálogo de ítems mágicos y el inventario de la tienda del servid
 
 ### Scripts Disponibles
 
-- `npm run build` - Compila TypeScript a JavaScript
-- `npm run start` - Inicia el bot en producción
-- `npm run dev` - Modo desarrollo con recarga automática
-- `npm run deploy:commands` - Despliega comandos slash de Discord
+- `pnpm run build` - Compila TypeScript a JavaScript y copia assets
+- `pnpm run start` - Inicia el bot en producción
+- `pnpm run dev` - Modo desarrollo con recarga automática
+- `pnpm run deploy:commands` - Despliega comandos slash de Discord
 
 ### Estructura del Proyecto
 
@@ -351,31 +360,35 @@ Los embeds del sistema de tienda cuentan con un diseño cuidado y profesional:
 
 ## 📝 Personalización
 
-### Configurar Archivos SDR para la Tienda
+### Archivos SDR para la Tienda
 
-El sistema de tienda puede cargar ítems desde archivos JSON en formato SDR (System Reference Document):
+El sistema de tienda incluye archivos SDR (System Reference Document) preconfigurados en la carpeta `sdr/`:
 
-1. Crea una carpeta `sdr/` en la raíz del proyecto
-2. Agrega archivos JSON con la estructura:
-   ```json
-   [
-     {
-       "name": "Espada Larga +1",
-       "price": "500 po",
-       "link": "https://ejemplo.com/item" (opcional)
-     }
-   ]
-   ```
+#### Archivos Disponibles
+- `common.json` - Ítems comunes (beads, tokens, basic equipment)
+- `uncommon.json` - Ítems poco comunes (potions, scrolls, minor magic items)
+- `rare.json` - Ítems raros (powerful weapons, armor, significant magic items)
+- `potions.json` - Pociones variadas (healing, enhancement, utility)
 
-3. Los archivos soportados son:
-   - `common.json` - Ítems comunes
-   - `uncommon.json` - Ítems poco comunes
-   - `rare.json` - Ítems raros
-   - `potions.json` - Pociones (común por defecto)
+#### Estructura de los Archivos
+Cada archivo JSON contiene un array de objetos con esta estructura:
+```json
+[
+  {
+    "name": "Bead of Nourishment x20",
+    "price": "1",
+    "link": "https://5e.tools/items.html#bead%20of%20nourishment_xge"
+  }
+]
+```
 
-4. Usa `/tienda catalogo-cargar` para importar los ítems al catálogo
+#### Uso
+1. Los archivos ya están incluidos en el proyecto
+2. Usa `/tienda catalogo-cargar` para importar todos los ítems al catálogo
+3. El tipo de ítem (weapon, armor, potion, etc.) se infiere automáticamente del nombre
+4. Los precios están en piezas de oro (po) por defecto
 
-**Nota**: El tipo de ítem (weapon, armor, potion, etc.) se infiere automáticamente del nombre del ítem usando palabras clave.
+**Nota**: Puedes agregar más ítems editando estos archivos o crear nuevos archivos JSON con la misma estructura.
 
 ### Cambiar la Campaña
 
@@ -385,14 +398,21 @@ Para usar una campaña diferente de Nivel20:
 2. Copia el ID de la URL (ej: `campaigns/12345-mi-campana`)
 3. Actualiza `CAMPAIGN_URL` en `src/services/nivel20.service.ts`
 
-### Configurar Base de Datos (Características Futuras)
+### Configurar Base de Datos
 
-Se recomienda usar **Vercel Postgres** o **Supabase** para las características que requieren persistencia:
+El bot usa **SQLite** con better-sqlite3 para persistencia local:
 
+- **Base de datos por defecto**: `./data/bruno-bot.db`
+- **Schema**: Ver `src/database/schema.sql`
+- **Migraciones**: Automáticas al iniciar el bot
+
+Para producción con Docker, la base de datos se persiste en el volumen `bruno-bot-data`.
+
+Si necesitas una base de datos externa (característica futura):
 1. **Vercel Postgres**:
    ```bash
    # Instalar CLI de Vercel
-   npm i -g vercel
+   pnpm add -g vercel
    
    # Crear base de datos
    vercel postgres create
@@ -408,28 +428,40 @@ Se recomienda usar **Vercel Postgres** o **Supabase** para las características 
 1. Crea un nuevo archivo en `src/commands/`
 2. Implementa la interfaz `Command`
 3. Exporta el comando en `src/commands/index.ts`
-4. Ejecuta `npm run deploy:commands`
+4. Ejecuta `pnpm run deploy:commands`
 
 ## 🐛 Solución de Problemas
 
 ### El bot no responde a comandos
-- Verifica que las variables de entorno estén correctamente configuradas
-- Asegúrate de haber ejecutado `npm run deploy:commands`
-- Revisa los logs para errores específicos
+- Verifica que las variables de entorno estén correctamente configuradas en `.env`
+- Asegúrate de haber ejecutado `pnpm run deploy:commands` después de cambios
+- Revisa los logs para errores específicos: `docker-compose logs -f bruno-bot`
+- Confirma que el bot esté online en Discord
 
 ### Error al buscar personajes
-- Verifica que el `CAMPAIGN_URL` sea correcto
+- Verifica que el `CAMPAIGN_URL` en `src/services/nivel20.service.ts` sea correcto
 - Asegúrate de que la campaña sea pública o que tengas acceso
-- Revisa la conectividad de red
+- Revisa la conectividad de red y que nivel20.com esté accesible
 
 ### Problemas de permisos
-- Verifica que el bot tenga los permisos necesarios en el servidor
+- Verifica que el bot tenga los permisos necesarios: Send Messages, Use Slash Commands, Embed Links
 - Asegúrate de que el bot pueda enviar mensajes y usar comandos slash
 - **Confirma que el usuario tenga rol de Dungeon Master** - Todos los comandos requieren permisos DM
 
-### Problemas con características futuras
-- Verifica la configuración de la base de datos si usas funciones que requieren persistencia
-- Asegúrate de que las variables de entorno de la base de datos estén correctamente configuradas
+### Problemas con la base de datos
+- Verifica que la carpeta `data/` exista y tenga permisos de escritura
+- En Docker, asegúrate de que el volumen `bruno-bot-data` esté montado correctamente
+- Revisa que `DB_PATH` en `.env` apunte a una ubicación válida
+
+### Problemas con pnpm
+- Si tienes errores de dependencias, ejecuta `pnpm install --force`
+- Para limpiar caché: `pnpm store prune`
+- Asegúrate de tener pnpm instalado: `npm install -g pnpm`
+
+### Problemas con la tienda
+- Verifica que los archivos SDR en `sdr/` tengan formato JSON válido
+- Usa `/tienda catalogo-cargar` para poblar el catálogo inicialmente
+- Revisa que los precios tengan formato válido (número o "X po")
 
 ## 📄 Licencia
 
@@ -452,8 +484,6 @@ Las contribuciones son bienvenidas. Por favor:
 - [Cheerio](https://cheerio.js.org/) - Web scraping
 - [Axios](https://axios-http.com/) - Cliente HTTP
 - [TypeScript](https://www.typescriptlang.org/) - Lenguaje de programación
-- [Vercel](https://vercel.com/) - Plataforma de deployment y base de datos
-- [Supabase](https://supabase.com/) - Alternativa de base de datos
 
 ---
 
