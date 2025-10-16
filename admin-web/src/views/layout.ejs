@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'discord-blurple': '#5865F2',
+                        'discord-green': '#3BA55C',
+                        'discord-yellow': '#FAA61A',
+                        'discord-red': '#ED4245',
+                        'discord-orange': '#EB7590'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .sidebar-item {
+            @apply flex items-center px-6 py-3 text-sm font-medium transition-colors duration-200;
+        }
+        .sidebar-item-active {
+            @apply bg-blue-700 text-white;
+        }
+        .sidebar-item-inactive {
+            @apply text-blue-100 hover:bg-blue-600 hover:text-white;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-discord-blurple text-white">
+            <div class="p-6">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-dice text-discord-blurple text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold">Bruno Bot</h1>
+                        <p class="text-xs text-blue-200">Panel de Administración</p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="mt-6">
+                <a href="/admin/dashboard" class="sidebar-item <%= (typeof currentRoute !== 'undefined' && currentRoute === 'dashboard') ? 'sidebar-item-active' : 'sidebar-item-inactive' %> mb-1">
+                    <i class="fas fa-chart-line w-5 mr-3"></i>
+                    Dashboard
+                </a>
+                <a href="/admin/guilds" class="sidebar-item <%= (typeof currentRoute !== 'undefined' && currentRoute === 'guilds') ? 'sidebar-item-active' : 'sidebar-item-inactive' %> mb-1">
+                    <i class="fas fa-server w-5 mr-3"></i>
+                    Servidores
+                </a>
+                <a href="/admin/reminders" class="sidebar-item <%= (typeof currentRoute !== 'undefined' && currentRoute === 'reminders') ? 'sidebar-item-active' : 'sidebar-item-inactive' %> mb-1">
+                    <i class="fas fa-clock w-5 mr-3"></i>
+                    Recordatorios
+                </a>
+                <a href="/admin/shop/catalog" class="sidebar-item <%= (typeof currentRoute !== 'undefined' && currentRoute === 'shop') ? 'sidebar-item-active' : 'sidebar-item-inactive' %> mb-1">
+                    <i class="fas fa-store w-5 mr-3"></i>
+                    Tienda
+                </a>
+                <a href="/admin/weather" class="sidebar-item <%= (typeof currentRoute !== 'undefined' && currentRoute === 'weather') ? 'sidebar-item-active' : 'sidebar-item-inactive' %> mb-1">
+                    <i class="fas fa-cloud-sun w-5 mr-3"></i>
+                    Clima
+                </a>
+            </nav>
+            
+            <div class="absolute bottom-0 w-64 p-6 border-t border-blue-700">
+                <form action="/auth/logout" method="POST" class="w-full">
+                    <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+                        <i class="fas fa-sign-out-alt mr-2"></i>
+                        Cerrar Sesión
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col">
+            <!-- Top Header -->
+            <header class="bg-white shadow-sm border-b border-gray-200">
+                <div class="px-6 py-4 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-semibold text-gray-900"><%= title.replace(' - Bruno Bot Admin', '') %></h2>
+                        <p class="text-sm text-gray-600">Gestiona tu bot de Discord</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-gray-900">Administrador</p>
+                            <p class="text-xs text-gray-500">En línea</p>
+                        </div>
+                        <div class="w-10 h-10 bg-discord-green rounded-full flex items-center justify-center">
+                            <i class="fas fa-user text-white"></i>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <div class="flex-1 p-6">
+                <%- body %>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Simple API client for frontend interactions
+        window.api = {
+            request: async (url, options = {}) => {
+                const response = await fetch(url, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    },
+                    ...options
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                return response.json();
+            },
+            
+            get: (url) => window.api.request(url),
+            post: (url, data) => window.api.request(url, {
+                method: 'POST',
+                body: JSON.stringify(data)
+            }),
+            put: (url, data) => window.api.request(url, {
+                method: 'PUT',
+                body: JSON.stringify(data)
+            }),
+            delete: (url) => window.api.request(url, {
+                method: 'DELETE'
+            })
+        };
+    </script>
+</body>
+</html>

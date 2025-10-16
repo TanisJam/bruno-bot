@@ -1,0 +1,345 @@
+<% 
+let currentRoute = 'dashboard';
+%>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'discord-blurple': '#5865F2',
+                        'discord-green': '#3BA55C',
+                        'discord-yellow': '#FAA61A',
+                        'discord-red': '#ED4245',
+                        'discord-orange': '#EB7590'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.2s, background-color 0.2s;
+        }
+        .sidebar-item-active {
+            background-color: #1e40af;
+            color: white;
+        }
+        .sidebar-item-inactive {
+            color: #dbeafe;
+        }
+        .sidebar-item-inactive:hover {
+            background-color: #2563eb;
+            color: white;
+        }
+        .card {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+        .card-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .card-body {
+            padding: 1.5rem;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .btn-secondary {
+            background-color: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+        .btn-secondary:hover {
+            background-color: #e5e7eb;
+            color: #111827;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-discord-blurple text-white">
+            <div class="p-6">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-dice text-discord-blurple text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold">Bruno Bot</h1>
+                        <p class="text-xs text-blue-200">Panel de Administración</p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="mt-6">
+                <a href="/admin/dashboard" class="sidebar-item sidebar-item-active mb-1">
+                    <i class="fas fa-chart-line w-5 mr-3"></i>
+                    Dashboard
+                </a>
+
+                <a href="/admin/reminders" class="sidebar-item sidebar-item-inactive mb-1">
+                    <i class="fas fa-clock w-5 mr-3"></i>
+                    Recordatorios
+                </a>
+                <a href="/admin/shop" class="sidebar-item sidebar-item-inactive mb-1">
+                    <i class="fas fa-store w-5 mr-3"></i>
+                    Tienda
+                </a>
+
+            </nav>
+            
+            <div class="absolute bottom-0 w-64 p-6 border-t border-blue-700">
+                <form action="/auth/logout" method="POST" class="w-full">
+                    <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+                        <i class="fas fa-sign-out-alt mr-2"></i>
+                        Cerrar Sesión
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col">
+            <!-- Top Header -->
+            <header class="bg-white shadow-sm border-b border-gray-200">
+                <div class="px-6 py-4 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-semibold text-gray-900"><%= title.replace(' - Bruno Bot Admin', '') %></h2>
+                        <p class="text-sm text-gray-600">Gestiona tu bot de Discord</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-gray-900">Administrador</p>
+                            <p class="text-xs text-gray-500">En línea</p>
+                        </div>
+                        <div class="w-10 h-10 bg-discord-green rounded-full flex items-center justify-center">
+                            <i class="fas fa-user text-white"></i>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <div class="flex-1 p-6">
+                <div class="space-y-6">
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-discord-blurple rounded-lg flex items-center justify-center">
+                        <i class="fas fa-server text-white text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Servidores</p>
+                        <p class="text-2xl font-bold text-gray-900"><%= stats.guilds %></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-discord-yellow rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clock text-white text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Recordatorios</p>
+                        <p class="text-2xl font-bold text-gray-900"><%= stats.reminders %></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-discord-green rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-white text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Activos</p>
+                        <p class="text-2xl font-bold text-gray-900"><%= stats.activeReminders %></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-gem text-white text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Items</p>
+                        <p class="text-2xl font-bold text-gray-900"><%= stats.items %></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-discord-fuchsia rounded-lg flex items-center justify-center">
+                        <i class="fas fa-store text-white text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Inventario</p>
+                        <p class="text-2xl font-bold text-gray-900"><%= stats.inventoryItems %></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-lg font-semibold text-gray-900">Acciones Rápidas</h3>
+            </div>
+            <div class="card-body">
+                <div class="grid grid-cols-2 gap-4">
+
+                    <a href="/admin/reminders" class="btn btn-secondary text-center">
+                        <i class="fas fa-clock mr-2"></i>
+                        Gestionar Recordatorios
+                    </a>
+                    <a href="/admin/shop" class="btn btn-secondary text-center">
+                        <i class="fas fa-gem mr-2"></i>
+                        Tienda
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-lg font-semibold text-gray-900">Estado del Sistema</h3>
+            </div>
+            <div class="card-body">
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-discord-green rounded-full mr-2"></div>
+                            <span class="text-sm font-medium text-gray-700">Base de Datos</span>
+                        </div>
+                        <span class="text-sm text-green-600">Conectada</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-discord-green rounded-full mr-2"></div>
+                            <span class="text-sm font-medium text-gray-700">API</span>
+                        </div>
+                        <span class="text-sm text-green-600">Operativa</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-discord-green rounded-full mr-2"></div>
+                            <span class="text-sm font-medium text-gray-700">Autenticación</span>
+                        </div>
+                        <span class="text-sm text-green-600">Segura</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="text-lg font-semibold text-gray-900">Actividad Reciente</h3>
+        </div>
+        <div class="card-body">
+            <div class="space-y-4">
+                <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                    <div class="w-8 h-8 bg-discord-blurple rounded-full flex items-center justify-center mr-3">
+                        <i class="fas fa-info text-white text-xs"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900">Panel de administración iniciado</p>
+                        <p class="text-xs text-gray-500">Sistema operativo y listo para gestionar</p>
+                    </div>
+                    <span class="text-xs text-gray-400">Ahora</span>
+                </div>
+                
+                <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                    <div class="w-8 h-8 bg-discord-green rounded-full flex items-center justify-center mr-3">
+                        <i class="fas fa-check text-white text-xs"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900">Conexión a base de datos establecida</p>
+                        <p class="text-xs text-gray-500">Todos los datos sincronizados correctamente</p>
+                    </div>
+                    <span class="text-xs text-gray-400">Ahora</span>
+                </div>
+            </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Simple API client for frontend interactions
+        window.api = {
+            request: async (url, options = {}) => {
+                const response = await fetch(url, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    },
+                    ...options
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                return response.json();
+            },
+            
+            get: (url) => window.api.request(url),
+            post: (url, data) => window.api.request(url, {
+                method: 'POST',
+                body: JSON.stringify(data)
+            }),
+            put: (url, data) => window.api.request(url, {
+                method: 'PUT',
+                body: JSON.stringify(data)
+            }),
+            delete: (url) => window.api.request(url, {
+                method: 'DELETE'
+            })
+        };
+    </script>
+</body>
+</html>

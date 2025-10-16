@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+  # Bot Discord (existente)
   bruno-bot:
     build:
       context: .
@@ -11,9 +12,38 @@ services:
       - TOKEN=${TOKEN}
       - GUILD_ID=${GUILD_ID}
       - DB_PATH=/app/data/bruno-bot.db
+      - TIMEZONE=${TIMEZONE:-America/Argentina/Buenos_Aires}
     volumes:
       - bruno-bot-data:/app/data
     restart: unless-stopped
+    depends_on:
+      - admin-web
+
+  # Panel web de administración (nuevo)
+  admin-web:
+    build:
+      context: ./admin-web
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DB_PATH=/app/data/bruno-bot.db
+      - ADMIN_API_KEY=${ADMIN_API_KEY}
+      - JWT_SECRET=${JWT_SECRET}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001
+      - TIMEZONE=${TIMEZONE:-America/Argentina/Buenos_Aires}
+    volumes:
+      - bruno-bot-data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
 volumes:
   bruno-bot-data:
